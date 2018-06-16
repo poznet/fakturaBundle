@@ -1,0 +1,16 @@
+{
+  "name": "poznet/FakturaBundle",
+  "description": "Bundle for generating  PL invoices",
+
+
+  "require": {
+
+
+  },
+  "autoload": {
+    "psr-0": {
+      "poznet/FakturaBundle": "src",
+
+    }
+  }
+}

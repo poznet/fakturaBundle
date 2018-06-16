@@ -1,0 +1,4 @@
+services:
+#    poznet_faktura.example:
+#        class: poznet\FakturaBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
