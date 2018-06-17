@@ -1,0 +1,6 @@
+doctrine:
+    orm:
+       dql:
+            string_functions:
+                 MONTH: poznet\FakturaBundle\Dql\Month
+                 YEAR: poznet\FakturaBundle\Dql\Year
