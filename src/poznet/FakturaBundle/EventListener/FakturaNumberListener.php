@@ -10,6 +10,7 @@ namespace FakturaBundle\src\poznet\FakturaBundle\EventListener;
 
 
 use Doctrine\ORM\Event\LifecycleEventArgs;
+use FakturaBundle\src\poznet\FakturaBundle\Service\FakturaNumberService;
 use poznet\FakturaBundle\Entity\Faktura;
 
 /**
@@ -20,6 +21,12 @@ use poznet\FakturaBundle\Entity\Faktura;
 class FakturaNumberListener
 {
     private $em;
+    private $nrService;
+
+    public function __construct(FakturaNumberService $service)
+    {
+        $this->nrService = $service;
+    }
 
 
     public function postPersist(LifecycleEventArgs $args)
@@ -28,10 +35,12 @@ class FakturaNumberListener
         $entity = $args->getEntity();
 
         if ($entity instanceof Faktura) {
-            if ($entity->getNr() == null) {
-                $data = $entity->getDataWystawienia();
+            $last=$this->em->getRepository('poznetFakturaBundle:Faktura')->findLastNumberForMonth($entity->getDataWystawienia());
+            $nr=$this->nrService->generate($last);
+            $entity->setNr($nr);
+            $this->em->flush($entity);
 
-            }
+
         }
     }
 }

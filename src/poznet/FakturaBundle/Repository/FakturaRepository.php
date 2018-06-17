@@ -10,4 +10,17 @@ namespace poznet\FakturaBundle\Repository;
  */
 class FakturaRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function findLastNumberForMonth(\DateTime $data)
+    {
+        $result = $this->getEntityManager()->createQuery('
+        SELECT F from FakturaBundle:Faktura F
+        WHERE MONTH(F.data_wystawienie)=:miesiac
+        ORDER BY F.id DESC 
+        ')
+            ->setParameter('miesiac', $data->format('m'))
+            ->getFirstResult();
+
+        return $result;
+    }
 }
