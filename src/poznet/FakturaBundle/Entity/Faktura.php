@@ -131,6 +131,12 @@ class Faktura
     private $uwagi;
 
 
+    public function __construct()
+    {
+        $this->dataUslugi=new \DateTime('now');
+        $this->dataWystawienia=new \DateTime('now');
+    }
+
     /**
      * Get id.
      *

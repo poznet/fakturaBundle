@@ -37,6 +37,7 @@ class FakturaFormSubscriber implements EventSubscriberInterface
         if (!$fv || null === $fv->getId()) {
             $service=$this->kernel->getContainer()->get('poznet_faktura_service');
             $fv->setTerminPlatnosci($service->generateTerminPlatnosci());
+            $fv->setNr($service->generateNumber($fv));
         }
 
     }

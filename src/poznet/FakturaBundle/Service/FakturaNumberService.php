@@ -67,6 +67,6 @@ class FakturaNumberService
         $data = new \DateTime('now + ' . $days . ' days');
         return $data;
     }
- 
+
 
 }
