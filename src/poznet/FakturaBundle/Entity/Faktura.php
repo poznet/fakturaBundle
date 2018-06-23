@@ -33,7 +33,7 @@ class Faktura
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="data_wystawienia", type="datetime")
+     * @ORM\Column(name="data_wystawienia", type="date")
      * @Assert\NotBlank()
      */
     private $dataWystawienia;
@@ -41,7 +41,7 @@ class Faktura
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="data_uslugi", type="datetime")
+     * @ORM\Column(name="data_uslugi", type="date")
      * @Assert\NotBlank()
      */
     private $dataUslugi;
@@ -70,6 +70,15 @@ class Faktura
      *
      */
     private $nabywcaId=0;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="zlecenie_id", type="integer")
+     *
+     */
+    private $zlecenieId=0;
 
     /**
      * @var string
@@ -110,7 +119,7 @@ class Faktura
     /**
      * @var string
      *
-     * @ORM\Column(name="termin_platnosci", type="datetime" )
+     * @ORM\Column(name="termin_platnosci", type="date" )
      */
     private $terminPlatnosci;
 
@@ -450,6 +459,22 @@ class Faktura
     public function setNabywcaId($nabywcaId)
     {
         $this->nabywcaId = $nabywcaId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getZlecenieId()
+    {
+        return $this->zlecenieId;
+    }
+
+    /**
+     * @param string $zlecenieId
+     */
+    public function setZlecenieId($zlecenieId)
+    {
+        $this->zlecenieId = $zlecenieId;
     }
 
 
