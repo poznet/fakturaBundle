@@ -1,5 +1,7 @@
 # fakturaBundle
 
+###
+To render FV form use `{% include '@poznetFaktura/fakturaForm.html.twig' %}`
 
 ### Parameters
 

@@ -32,7 +32,7 @@ class FakturaType extends AbstractType
             ->add('dataUslugi',null,['widget'=>'single_text'])
             ->add('nabywca')
             ->add('nabywcaNip')
-            ->add('pozycje')
+            ->add('pozycje',null,['attr'=>['style'=>'display:none;']])
             ->add('razemNetto')
             ->add('razemVat')
             ->add('razemBrutto')
@@ -43,7 +43,7 @@ class FakturaType extends AbstractType
             ]])
             ->add('terminPlatnosci',null,['widget'=>'single_text'])
             ->add('uwagi')
-            ->add("Zapisz",SubmitType::class)
+            ->add("Zapisz",SubmitType::class,['attr'=>['class'=>'btn-primary']])
             ;
         $builder->addEventSubscriber(new FakturaFormSubscriber($this->kernel));
 

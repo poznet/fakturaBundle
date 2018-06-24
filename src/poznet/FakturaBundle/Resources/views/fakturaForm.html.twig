@@ -1,0 +1,93 @@
+  {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6 col-xs-12">{{ form_row(form.nr) }}</div>
+        <div class="col-md-6 col-xs-12">
+            {{ form_row(form.dataWystawienia) }}
+            {{ form_row(form.dataUslugi) }}
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            {{ form_row(form.nabywcaNip) }}
+            {{ form_row(form.nabywca) }}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            {{ form_row(form.pozycje) }}
+            <div id="pozycje" style="margin-bottom:20px;">
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-md-4">{{ form_row(form.razemNetto) }}</div>
+        <div class="col-xs-12 col-md-4">{{ form_row(form.razemVat) }}</div>
+        <div class="col-xs-12 col-md-4">{{ form_row(form.razemBrutto) }}</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-md-6">
+            {{ form_row(form.uwagi) }}
+        </div>
+        <div class="col-xs-12 col-md-6">
+            {{ form_row(form.platnosc) }}
+            {{ form_row(form.terminPlatnosci) }}
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 text-center">
+            {{ form_row(form.Zapisz) }}
+        </div>
+    </div>
+    {{ form_end(form) }}
+
+  <script>
+      $( document ).ready(function() {
+
+          var fvmanager={
+              default_lines:5,
+              header:'<div class="row">' +
+              ' <div class="col-xs-12 col-md-5"><strong>Nazwa</strong></div>' +
+              '<div class="col-xs-12 col-md-1 text-center"><strong>Ilość</strong></div>' +
+              '<div class="col-xs-12 col-md-2 text-center"><strong>Cena/szt</strong></div>'+
+              '<div class="col-xs-12 col-md-2 text-center"><strong>VAT</strong></div>'+
+              '<div class="col-xs-12 col-md-2 text-right"><strong>Razem Brutto</strong></div>'+
+              '</div>',
+              linia:'<div class="row" style="margin-bottom:5px;padding-bottom:5px;border-bottom:1px solid; border-color: #D2D6DE;">' +
+              '<div class="col-xs-12 col-md-5">' +
+              '         <input type="text"  name="pozycja_nazwa[]"   maxlength="100" class="form-control fv_nazwa">' +
+              '</div>' +
+              '<div class="col-xs-12 col-md-1">' +
+              '         <input type="text"  name="pozycja_ilosc[]"   maxlength="10" class="form-control fv_ilosc">' +
+              '</div>' +
+              '<div class="col-xs-12 col-md-2">' +
+              '     <input type="text"  name="pozycja_cena[]"   maxlength="10" class="form-control fv_cena">' +
+              '</div>'+
+              '<div class="col-xs-12 col-md-2">' +
+              '     <input type="text"  name="pozycja_vat[]"   maxlength="2" class="form-control fv_vat">' +
+              '</div>'+
+              '<div class="col-xs-12 col-md-2">' +
+              '     <input type="text"  name="pozycja_razem[]"   maxlength="100" class="form-control fv_razem">' +
+              '</div>'+
+              '</div>',
+              generate:function(ilosc){
+                  var output=''
+                  ilosc = typeof ilosc !== 'undefined' ? ilosc : this.default_lines;
+                  output += this.header;
+                  for(i=0;i<ilosc;i++){
+                    output+=this.linia;
+                  }
+                return output;
+              }
+          };
+
+
+          console.log( "ready!" );
+          var id_pozycje=$('#pozycje');
+          var linie=fvmanager.generate();
+          id_pozycje.append(linie);
+
+      });
+  </script>

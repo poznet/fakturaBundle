@@ -276,7 +276,7 @@ class Faktura
      */
     public function setPozycje($pozycje)
     {
-        $this->pozycje = serialize($pozycje);
+        $this->pozycje = serialize(json_decode($pozycje,true));
 
         return $this;
     }
@@ -288,7 +288,7 @@ class Faktura
      */
     public function getPozycje()
     {
-        return unserialize($this->pozycje);
+        return json_encode(unserialize($this->pozycje));
     }
 
     /**
