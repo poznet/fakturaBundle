@@ -52,32 +52,56 @@
               ' <div class="col-xs-12 col-md-5"><strong>Nazwa</strong></div>' +
               '<div class="col-xs-12 col-md-1 text-center"><strong>Ilość</strong></div>' +
               '<div class="col-xs-12 col-md-2 text-center"><strong>Cena/szt</strong></div>'+
-              '<div class="col-xs-12 col-md-2 text-center"><strong>VAT</strong></div>'+
+              '<div class="col-xs-12 col-md-2 text-center"><strong>Stawka VAT</strong></div>'+
               '<div class="col-xs-12 col-md-2 text-right"><strong>Razem Brutto</strong></div>'+
               '</div>',
-              linia:'<div class="row" style="margin-bottom:5px;padding-bottom:5px;border-bottom:1px solid; border-color: #D2D6DE;">' +
-              '<div class="col-xs-12 col-md-5">' +
-              '         <input type="text"  name="pozycja_nazwa[]"   maxlength="100" class="form-control fv_nazwa">' +
-              '</div>' +
-              '<div class="col-xs-12 col-md-1">' +
-              '         <input type="text"  name="pozycja_ilosc[]"   maxlength="10" class="form-control fv_ilosc">' +
-              '</div>' +
-              '<div class="col-xs-12 col-md-2">' +
-              '     <input type="text"  name="pozycja_cena[]"   maxlength="10" class="form-control fv_cena">' +
-              '</div>'+
-              '<div class="col-xs-12 col-md-2">' +
-              '     <input type="text"  name="pozycja_vat[]"   maxlength="2" class="form-control fv_vat">' +
-              '</div>'+
-              '<div class="col-xs-12 col-md-2">' +
-              '     <input type="text"  name="pozycja_razem[]"   maxlength="100" class="form-control fv_razem">' +
-              '</div>'+
-              '</div>',
+              addlinia:function(id) {
+
+                  return '<div class="row" style="margin-bottom:5px;padding-bottom:5px;border-bottom:1px solid; border-color: #D2D6DE;">' +
+                  '<div class="col-xs-12 col-md-5">' +
+                  '         <input type="text"  name="pozycja_nazwa[]"  id="fv_nazwa_'+id+'"  maxlength="100" class="form-control fv_nazwa">' +
+                  '</div>' +
+                  '<div class="col-xs-12 col-md-1">' +
+                  '         <input type="text"  name="pozycja_ilosc[]" id="fv_ilosc_'+id+'" value="2" maxlength="10" class="form-control fv_ilosc">' +
+                  '</div>' +
+                  '<div class="col-xs-12 col-md-2">' +
+                  '     <input type="text"  name="pozycja_cena[]"  id="fv_cena_'+id+'" value="10" maxlength="10" class="form-control fv_cena">' +
+                  '</div>' +
+                  '<div class="col-xs-12 col-md-2">' +
+                  '     <input type="text"  name="pozycja_vat[]" id="fv_vat_'+id+'"  maxlength="2" class="form-control fv_vat">' +
+                  '</div>' +
+                  '<div class="col-xs-12 col-md-2">' +
+                  '     <input type="text"  name="pozycja_razem[]"  id="fv_razem_'+id+'" maxlength="100" class="form-control fv_razem">' +
+                  '</div>' +
+                  '</div>';
+              },
+              calculatelinie: function(id){
+                  ilosc_pole=$('#fv_ilosc_'+id);
+                  cena_pole=$('#fv_cena_'+id);
+                  vat_pole=$('#fv_vat_'+id);
+                  razem_pole=$('#fv_razem_'+id);
+
+                  if(typeof ilosc_pole ===  'undefined' ) return false;
+                  if(typeof cena_pole ===  'undefined' ) return false;
+                  if(typeof vat_pole ===  'undefined' ) return false;
+                  if(typeof razem_pole ===  'undefined' ) return false;
+
+                  ilosc=$('#fv_ilosc_'+id).val();
+                  cena=cena_pole.val();
+                  vat=$('#fv_vat_'+id).val();
+                  razem=$('#fv_razem_'+id).val();
+//access dynamic created  fields ?                  
+                  netto=cena*ilosc;
+                  console.log(cena_pole);
+                  razem_pole.val(netto);
+
+              },
               generate:function(ilosc){
                   var output=''
                   ilosc = typeof ilosc !== 'undefined' ? ilosc : this.default_lines;
                   output += this.header;
                   for(i=0;i<ilosc;i++){
-                    output+=this.linia;
+                    output+=this.addlinia(i);
                   }
                 return output;
               }
@@ -87,6 +111,7 @@
           console.log( "ready!" );
           var id_pozycje=$('#pozycje');
           var linie=fvmanager.generate();
+          fvmanager.calculatelinie(1);
           id_pozycje.append(linie);
 
       });
