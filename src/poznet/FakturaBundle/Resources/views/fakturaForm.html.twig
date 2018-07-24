@@ -62,10 +62,10 @@
                   '         <input type="text"  name="pozycja_nazwa[]"  id="fv_nazwa_'+id+'"  maxlength="100" class="form-control fv_nazwa">' +
                   '</div>' +
                   '<div class="col-xs-12 col-md-1">' +
-                  '         <input type="text"  name="pozycja_ilosc[]" id="fv_ilosc_'+id+'" value="2" maxlength="10" class="form-control fv_ilosc">' +
+                  '         <input type="text"  name="pozycja_ilosc[]" id="fv_ilosc_'+id+'"   maxlength="10" class="form-control fv_ilosc">' +
                   '</div>' +
                   '<div class="col-xs-12 col-md-2">' +
-                  '     <input type="text"  name="pozycja_cena[]"  id="fv_cena_'+id+'" value="10" maxlength="10" class="form-control fv_cena">' +
+                  '     <input type="text"  name="pozycja_cena[]"  id="fv_cena_'+id+'"   maxlength="10" class="form-control fv_cena">' +
                   '</div>' +
                   '<div class="col-xs-12 col-md-2">' +
                   '     <input type="text"  name="pozycja_vat[]" id="fv_vat_'+id+'"  maxlength="2" class="form-control fv_vat">' +
@@ -90,7 +90,7 @@
                   cena=cena_pole.val();
                   vat=$('#fv_vat_'+id).val();
                   razem=$('#fv_razem_'+id).val();
-//access dynamic created  fields ?                  
+//access dynamic created  fields ?
                   netto=cena*ilosc;
                   console.log(cena_pole);
                   razem_pole.val(netto);
