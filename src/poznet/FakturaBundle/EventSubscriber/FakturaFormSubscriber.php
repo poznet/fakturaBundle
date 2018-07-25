@@ -57,7 +57,7 @@ class FakturaFormSubscriber implements EventSubscriberInterface
     }
 
     // zlicza brutto pozycji
-    //zliczanie sum
+    // zliczanie sum
     // wywala pozycje 0rowe
 
     public function Submit(FormEvent $event)

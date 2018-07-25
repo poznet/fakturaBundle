@@ -137,7 +137,7 @@ class Faktura
     {
         $this->dataUslugi=new \DateTime('now');
         $this->dataWystawienia=new \DateTime('now');
-        $this->pozycje= new ArrayCollection();
+        $this->pozycje= serialize(new ArrayCollection());
     }
 
     /**
@@ -279,7 +279,7 @@ class Faktura
      */
     public function setPozycje($pozycje)
     {
-        $this->pozycje = $pozycje;
+        $this->pozycje = serialize($pozycje);
 
         return $this;
     }
@@ -291,7 +291,7 @@ class Faktura
      */
     public function getPozycje()
     {
-        return $this->pozycje;
+        return unserialize($this->pozycje);
     }
 
     /**

@@ -8,6 +8,7 @@
 
 namespace FakturaBundle\src\poznet\FakturaBundle\Service;
 
+use Doctrine\ORM\EntityManagerInterface;
 use poznet\FakturaBundle\Entity\Faktura;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -18,14 +19,16 @@ use Symfony\Component\HttpKernel\KernelInterface;
 class FakturaNumberService
 {
     private $kernel;
+    private $em;
 
     /**
      * @param $last
      */
 
-    public function __construct(KernelInterface $kernel)
+    public function __construct(KernelInterface $kernel,EntityManagerInterface $entityManager)
     {
         $this->kernel = $kernel;
+        $this->em=$entityManager;
     }
 
     /**
@@ -34,6 +37,10 @@ class FakturaNumberService
      */
     public function generateNumber(Faktura $fv)
     {
+        $ostatnia=$this->em->getRepository("poznetFakturaBundle:Faktura")->findBy([],["id"=>"DESC"],1);
+        if(count($ostatnia)>0)
+            $fv=$ostatnia[0];
+
         if (!$fv instanceof Faktura)
             return new \Exception("Need FV Entity for  number generation");
         $last = $fv->getNr();
@@ -42,6 +49,10 @@ class FakturaNumberService
         if (count($tab) == 0) {
             return '1/' . $fv->getDataWystawienia()->format('m') . '/' . $fv->getDataWystawienia()->format('Y');
         }
+        $dzis=new \DateTime('now');
+        if($fv->getDataWystawienia()->format('m')!=$dzis->format('m'))
+            return '1/' . $fv->getDataWystawienia()->format('m') . '/' . $fv->getDataWystawienia()->format('Y');
+
         $x = $tab[0];
         $tab[0] = (int)$x + 1;
         $tab[1] = $fv->getDataWystawienia()->format('m');
