@@ -38,6 +38,7 @@ class Pozycja
     public function calculate(){
         $this->netto=$this->ilosc*$this->cena;
         $this->brutto=$this->netto*(1+($this->vat/100));
+        $this->razem=$this->brutto;
     }
 
     /**

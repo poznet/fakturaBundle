@@ -128,7 +128,7 @@ class Faktura
     /**
      * @var string
      *
-     * @ORM\Column(name="uwagi", type="text")
+     * @ORM\Column(name="uwagi", type="text",nullable=true)
      */
     private $uwagi;
 
@@ -490,7 +490,7 @@ class Faktura
      * @param Pozycja $pozycja
      *
      */
-    public function removePozycjoa(Pozycja $pozycja)
+    public function removePozycja(Pozycja $pozycja)
     {
         $this->pozycje->removeElement($pozycja);
     }
