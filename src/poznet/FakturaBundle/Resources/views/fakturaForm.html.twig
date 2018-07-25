@@ -15,10 +15,24 @@
     </div>
     <div class="row">
         <div class="col-xs-12">
-            {{ form_row(form.pozycje) }}
-            <div id="pozycje" style="margin-bottom:20px;">
+            <h3>Pozycje</h3>
+            <div class="row">
+                <div class="col-xs-12 col-md-6"><strong>Nazwa</strong></div>
+                <div class="col-xs-12 col-md-1 text-center"><strong>Ilosc</strong></div>
+                <div class="col-xs-12 col-md-2 text-center"><strong>Cena</strong></div>
+                <div class="col-xs-12 col-md-1 text-center"><strong>Vat</strong></div>
+                <div class="col-xs-12 col-md-2 text-center"><strong>Razem</strong></div>
+            </div>
+                {% for tag in form.pozycje %}
+
+                    {%  include 'poznetFakturaBundle::pozycjaForm.html.twig' %}
+                {% endfor %}
+            <div class="tags" data-prototype="{% filter escape %}
+             {{ include('poznetFakturaBundle::pozycjaForm.html.twig', { 'tag': form.pozycje.vars.prototype }) }}
+         {% endfilter %}">
 
             </div>
+            <br/><br/>
         </div>
     </div>
     <div class="row">
@@ -36,6 +50,7 @@
 
         </div>
     </div>
+
     <div class="row">
         <div class="col-xs-12 text-center">
             {{ form_row(form.Zapisz) }}
@@ -44,75 +59,73 @@
     {{ form_end(form) }}
 
   <script>
+      var $collectionHolder;
+
+      // setup an "add a tag" link
+      var $addTagButton = $('<a class="btn btn-xs btn-warning add_tag_link">Dodaj pozycje</a>');
+      var $newLinkLi = $('<div></div>').append($addTagButton);
+
+      function addTagFormDeleteLink($tagFormLi) {
+          var $removeFormButton = $('<a class="btn btn-xs btn-danger" style="float: right;position: relative;top:-40px;right:10px;">Usuń</a>');
+          $tagFormLi.append($removeFormButton);
+
+          $removeFormButton.on('click', function(e) {
+              // remove the li for the tag form
+              $tagFormLi.remove();
+          });
+      }
+
+
+      function addTagForm($collectionHolder, $newLinkLi) {
+          // Get the data-prototype explained earlier
+          var prototype = $collectionHolder.data('prototype');
+
+          // get the new index
+          var index = $collectionHolder.data('index');
+
+          var newForm = prototype;
+          // You need this only if you didn't set 'label' => false in your tags field in TaskType
+          // Replace '__name__label__' in the prototype's HTML to
+          // instead be a number based on how many items we have
+          // newForm = newForm.replace(/__name__label__/g, index);
+
+          // Replace '__name__' in the prototype's HTML to
+          // instead be a number based on how many items we have
+          newForm = newForm.replace(/__name__/g, index);
+
+          // increase the index with one for the next item
+          $collectionHolder.data('index', index + 1);
+
+          // Display the form in the page in an li, before the "Add a tag" link li
+          var $newFormLi = $('<div></div>').append(newForm);
+          $newLinkLi.before($newFormLi);
+
+          addTagFormDeleteLink($newFormLi);
+      }
       $( document ).ready(function() {
 
-          var fvmanager={
-              default_lines:5,
-              header:'<div class="row">' +
-              ' <div class="col-xs-12 col-md-5"><strong>Nazwa</strong></div>' +
-              '<div class="col-xs-12 col-md-1 text-center"><strong>Ilość</strong></div>' +
-              '<div class="col-xs-12 col-md-2 text-center"><strong>Cena/szt</strong></div>'+
-              '<div class="col-xs-12 col-md-2 text-center"><strong>Stawka VAT</strong></div>'+
-              '<div class="col-xs-12 col-md-2 text-right"><strong>Razem Brutto</strong></div>'+
-              '</div>',
-              addlinia:function(id) {
+          // Get the ul that holds the collection of tags
+          $collectionHolder = $('div.tags');
 
-                  return '<div class="row" style="margin-bottom:5px;padding-bottom:5px;border-bottom:1px solid; border-color: #D2D6DE;">' +
-                  '<div class="col-xs-12 col-md-5">' +
-                  '         <input type="text"  name="pozycja_nazwa[]"  id="fv_nazwa_'+id+'"  maxlength="100" class="form-control fv_nazwa">' +
-                  '</div>' +
-                  '<div class="col-xs-12 col-md-1">' +
-                  '         <input type="text"  name="pozycja_ilosc[]" id="fv_ilosc_'+id+'"   maxlength="10" class="form-control fv_ilosc">' +
-                  '</div>' +
-                  '<div class="col-xs-12 col-md-2">' +
-                  '     <input type="text"  name="pozycja_cena[]"  id="fv_cena_'+id+'"   maxlength="10" class="form-control fv_cena">' +
-                  '</div>' +
-                  '<div class="col-xs-12 col-md-2">' +
-                  '     <input type="text"  name="pozycja_vat[]" id="fv_vat_'+id+'"  maxlength="2" class="form-control fv_vat">' +
-                  '</div>' +
-                  '<div class="col-xs-12 col-md-2">' +
-                  '     <input type="text"  name="pozycja_razem[]"  id="fv_razem_'+id+'" maxlength="100" class="form-control fv_razem">' +
-                  '</div>' +
-                  '</div>';
-              },
-              calculatelinie: function(id){
-                  ilosc_pole=$('#fv_ilosc_'+id);
-                  cena_pole=$('#fv_cena_'+id);
-                  vat_pole=$('#fv_vat_'+id);
-                  razem_pole=$('#fv_razem_'+id);
-
-                  if(typeof ilosc_pole ===  'undefined' ) return false;
-                  if(typeof cena_pole ===  'undefined' ) return false;
-                  if(typeof vat_pole ===  'undefined' ) return false;
-                  if(typeof razem_pole ===  'undefined' ) return false;
-
-                  ilosc=$('#fv_ilosc_'+id).val();
-                  cena=cena_pole.val();
-                  vat=$('#fv_vat_'+id).val();
-                  razem=$('#fv_razem_'+id).val();
-//access dynamic created  fields ?
-                  netto=cena*ilosc;
-                  console.log(cena_pole);
-                  razem_pole.val(netto);
-
-              },
-              generate:function(ilosc){
-                  var output=''
-                  ilosc = typeof ilosc !== 'undefined' ? ilosc : this.default_lines;
-                  output += this.header;
-                  for(i=0;i<ilosc;i++){
-                    output+=this.addlinia(i);
-                  }
-                return output;
-              }
-          };
+          // add a delete link to all of the existing tag form li elements
+          $collectionHolder.find('li').each(function() {
+              addTagFormDeleteLink($(this));
+          });
 
 
-          console.log( "ready!" );
-          var id_pozycje=$('#pozycje');
-          var linie=fvmanager.generate();
-          fvmanager.calculatelinie(1);
-          id_pozycje.append(linie);
+          // Get the ul that holds the collection of tags
+          $collectionHolder = $('div.tags');
 
+          // add the "add a tag" anchor and li to the tags ul
+          $collectionHolder.append($newLinkLi);
+
+          // count the current form inputs we have (e.g. 2), use that as the new
+          // index when inserting a new item (e.g. 2)
+          $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+          $addTagButton.on('click', function(e) {
+              // add a new tag form (see next code block)
+              addTagForm($collectionHolder, $newLinkLi);
+          });
       });
   </script>

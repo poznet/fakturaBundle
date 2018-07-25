@@ -6,13 +6,13 @@
  * Time: 12:18
  */
 
-namespace FakturaBundle\src\poznet\FakturaBundle\Model;
+namespace poznet\FakturaBundle\Model;
 
 /**
  * Class PozycjaModel
  * @package FakturaBundle\src\poznet\FakturaBundle\Model
  */
-class PozycjaModel
+class Pozycja
 {
 
     const VAT23=23;
@@ -24,6 +24,7 @@ class PozycjaModel
     private $netto;
     private $vat;
     private $brutto;
+    private $razem;
 
 
     /**
@@ -134,6 +135,22 @@ class PozycjaModel
     public function setBrutto($brutto)
     {
         $this->brutto = $brutto;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRazem()
+    {
+        return $this->razem;
+    }
+
+    /**
+     * @param mixed $razem
+     */
+    public function setRazem($razem)
+    {
+        $this->razem = $razem;
     }
 
 

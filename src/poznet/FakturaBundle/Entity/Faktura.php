@@ -2,7 +2,9 @@
 
 namespace poznet\FakturaBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use poznet\FakturaBundle\Model\Pozycja;
 use Symfony\Component\Validator\Constraints as Assert;
 use Kiczort\PolishValidatorBundle\Validator\Constraints  as KiczortAssert;
 
@@ -135,6 +137,7 @@ class Faktura
     {
         $this->dataUslugi=new \DateTime('now');
         $this->dataWystawienia=new \DateTime('now');
+        $this->pozycje= new ArrayCollection();
     }
 
     /**
@@ -276,7 +279,7 @@ class Faktura
      */
     public function setPozycje($pozycje)
     {
-        $this->pozycje = serialize(json_decode($pozycje,true));
+        $this->pozycje = $pozycje;
 
         return $this;
     }
@@ -288,7 +291,7 @@ class Faktura
      */
     public function getPozycje()
     {
-        return json_encode(unserialize($this->pozycje));
+        return $this->pozycje;
     }
 
     /**
@@ -481,6 +484,15 @@ class Faktura
     public function setZlecenieId($zlecenieId)
     {
         $this->zlecenieId = $zlecenieId;
+    }
+
+    /**
+     * @param Pozycja $pozycja
+     *
+     */
+    public function removePozycjoa(Pozycja $pozycja)
+    {
+        $this->pozycje->removeElement($pozycja);
     }
 
 

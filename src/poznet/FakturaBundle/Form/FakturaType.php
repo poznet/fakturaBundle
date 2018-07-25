@@ -3,8 +3,11 @@
 namespace poznet\FakturaBundle\Form;
 
 use FakturaBundle\src\poznet\FakturaBundle\EventSubscriber\FakturaFormSubscriber;
+use FakturaBundle\src\poznet\FakturaBundle\Model\PozycjaModel;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -32,7 +35,12 @@ class FakturaType extends AbstractType
             ->add('dataUslugi',null,['widget'=>'single_text'])
             ->add('nabywca')
             ->add('nabywcaNip')
-            ->add('pozycje',null,['attr'=>['style'=>'display:none;']])
+            ->add('pozycje',CollectionType::class,[
+                'entry_type'=>PozycjaType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true ,
+                'allow_delete' => true
+            ])
             ->add('razemNetto')
             ->add('razemVat')
             ->add('razemBrutto')
