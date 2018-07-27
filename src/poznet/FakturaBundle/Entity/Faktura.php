@@ -16,6 +16,9 @@ use Kiczort\PolishValidatorBundle\Validator\Constraints  as KiczortAssert;
  */
 class Faktura
 {
+
+    CONST STATUS_PAID='zapłacone';
+    CONST STATUS_UNPAID='niezapłacone';
     /**
      * @var int
      *
@@ -132,12 +135,19 @@ class Faktura
      */
     private $uwagi;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="status", type="string", length=255)
+     */
+    private $status;
 
     public function __construct()
     {
         $this->dataUslugi=new \DateTime('now');
         $this->dataWystawienia=new \DateTime('now');
         $this->pozycje= serialize(new ArrayCollection());
+        $this->status=$this::STATUS_UNPAID;
     }
 
     /**
@@ -493,6 +503,22 @@ class Faktura
     public function removePozycja(Pozycja $pozycja)
     {
         $this->pozycje->removeElement($pozycja);
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
     }
 
 
