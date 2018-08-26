@@ -9,3 +9,8 @@ services:
     poznet\FakturaBundle\Form\FakturaType:
         tags: [form.type]
         arguments: ['@kernel']
+
+
+    poznet_faktura_generator:
+        class: FV\fakturaBundle\src\poznet\FakturaBundle\Service\FakturaGeneratorService
+        arguments: ['@doctrine.orm.default_entity_manager', '@Twig_Environment','%kernel.root_dir%']

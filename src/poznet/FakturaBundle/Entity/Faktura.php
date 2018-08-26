@@ -31,7 +31,7 @@ class Faktura
     /**
      * @var string
      * @Assert\NotBlank()     *
-     * @ORM\Column(name="nr", type="string", length=255, unique=true)
+     * @ORM\Column(name="nr", type="string", length=255,unique=true)
      */
     private $nr;
 
@@ -62,8 +62,8 @@ class Faktura
     /**
      * @var string
      *
-     * @ORM\Column(name="nabywca_nip", type="string", length=100)
-     * @Assert\NotBlank()
+     * @ORM\Column(name="nabywca_nip", type="string", length=100 , nullable=true)
+     *
      * @KiczortAssert\Nip
      */
     private $nabywcaNip;
@@ -124,7 +124,7 @@ class Faktura
     /**
      * @var string
      *
-     * @ORM\Column(name="termin_platnosci", type="date" )
+     * @ORM\Column(name="termin_platnosci", type="date" ,nullable=true)
      */
     private $terminPlatnosci;
 
@@ -148,6 +148,25 @@ class Faktura
         $this->dataWystawienia=new \DateTime('now');
         $this->pozycje= serialize(new ArrayCollection());
         $this->status=$this::STATUS_UNPAID;
+    }
+
+
+    public function calculate(){
+        $sumanetto=0;
+        $sumavat=0;
+        $sumarazem=0;
+        foreach($this->getPozycje() as $pozycja){
+            $sumanetto+=$pozycja->getNetto();
+            $sumavat+=$pozycja->getVat();
+            $sumarazem+=$pozycja->getRazem();
+
+        }
+
+        $this->setRazemNetto($sumanetto);
+        $this->setRazemVat($sumavat);
+        $this->setRazemSuma($sumarazem);
+        $this->setRazemBrutto($sumarazem);
+
     }
 
     /**

@@ -15,8 +15,8 @@ namespace poznet\FakturaBundle\Model;
 class Pozycja
 {
 
-    const VAT23=23;
-    const VAT8=8;
+    const VAT23 = 23;
+    const VAT8 = 8;
 
     private $nazwa;
     private $ilosc;
@@ -32,13 +32,21 @@ class Pozycja
      */
     public function __construct()
     {
-        $this->vat=self::VAT23;
+        $this->vat = self::VAT23;
     }
 
-    public function calculate(){
-        $this->netto=$this->ilosc*$this->cena;
-        $this->brutto=$this->netto*(1+($this->vat/100));
-        $this->razem=$this->brutto;
+    public function calculate()
+    {
+        if ($this->netto > 0) {
+            $this->netto = $this->ilosc * $this->cena;
+            $this->brutto = $this->netto * (1 + ($this->vat / 100));
+            $this->razem = $this->brutto;
+        } elseif ($this->brutto > 0) {
+            $this->netto = $this->brutto / (1 + ($this->vat / 100));
+            $this->razem = $this->brutto;
+        }
+
+
     }
 
     /**
@@ -153,8 +161,6 @@ class Pozycja
     {
         $this->razem = $razem;
     }
-
-
 
 
 }
