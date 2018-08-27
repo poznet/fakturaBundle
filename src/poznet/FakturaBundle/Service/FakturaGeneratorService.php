@@ -30,27 +30,30 @@ class FakturaGeneratorService
     {
         $this->em = $em;
         $this->twig = $twig;
-        $this->root = $root.'/..';
+        $this->root = $root . '/..';
     }
 
 
     public function generateHTML(Faktura $fv)
     {
-        return $this->twig->render('poznetFakturaBundle::print.html.twig', ['faktura'=>$fv]);
+        return $this->twig->render('poznetFakturaBundle::print.html.twig', ['faktura' => $fv]);
     }
 
-    public function savePDF(Faktura $fv,$footer=null){
+    public function savePDF(Faktura $fv, $footer = null)
+    {
         $this->saveHTML($fv);
 
-       system('wkhtmltopdf --no-background --footer-center "'.$footer.'" '. $this->root . '/fv/' . strtr($fv->getNr(),['/'=>'-']) . '.html '.$this->root . '/fv/' . strtr($fv->getNr(),['/'=>'-']) . '.pdf');
+        $process = new Process(['wkhtmltopdf', '--no-background', $this->root . '/fv/' . strtr($fv->getNr(), ['/' => '-']) . '.html', , $this->root . '/fv/' . strtr($fv->getNr(), ['/' => '-']) . '.pdf']);
+        $process->run();
 
+        $process->mustRun();
 
     }
 
     public function saveHTML(Faktura $fv)
     {
         $this->checkDir();
-        $path = $this->root . '/fv/' . strtr($fv->getNr(),['/'=>'-']) . '.html';
+        $path = $this->root . '/fv/' . strtr($fv->getNr(), ['/' => '-']) . '.html';
         $html = $this->generateHTML($fv);
         $fs = new Filesystem();
         $fs->remove($path);
