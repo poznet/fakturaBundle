@@ -43,7 +43,7 @@ class FakturaGeneratorService
     {
         $this->saveHTML($fv);
 
-        $process = new Process(['wkhtmltopdf', '--no-background', $this->root . '/fv/' . strtr($fv->getNr(), ['/' => '-']) . '.html', , $this->root . '/fv/' . strtr($fv->getNr(), ['/' => '-']) . '.pdf']);
+        $process = new Process(['wkhtmltopdf', '--no-background', $this->root . '/fv/' . strtr($fv->getNr(), ['/' => '-']) . '.html',$this->root . '/fv/' . strtr($fv->getNr(), ['/' => '-']) . '.pdf']);
         $process->run();
 
         $process->mustRun();
