@@ -39,11 +39,11 @@ class FakturaGeneratorService
         return $this->twig->render('poznetFakturaBundle::print.html.twig', ['faktura'=>$fv]);
     }
 
-    public function savePDF(Faktura $fv){
+    public function savePDF(Faktura $fv,$footer=null){
         $this->saveHTML($fv);
 
-        $process=new Process(['wkhtmltopdf',$this->root . '/fv/' . strtr($fv->getNr(),['/'=>'-']) . '.html',$this->root . '/fv/' . strtr($fv->getNr(),['/'=>'-']) . '.pdf']);
-        $process->run();
+       system('wkhtmltopdf --no-background --footer-center "'.$footer.'" '. $this->root . '/fv/' . strtr($fv->getNr(),['/'=>'-']) . '.html '.$this->root . '/fv/' . strtr($fv->getNr(),['/'=>'-']) . '.pdf');
+
 
     }
 
