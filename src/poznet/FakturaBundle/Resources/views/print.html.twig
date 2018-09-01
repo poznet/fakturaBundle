@@ -46,6 +46,12 @@
         .items-table td, .items-table th { border:1px solid #555555; padding:4px 5px ; text-align:left}
         .items-table th { background:#f5f5f5;}
         .totals-row .wide-cell { border:1px solid #fff; border-right:1px solid #555555; border-top:1px solid #555555}
+
+            div.divFooter {
+                position: fixed;
+                bottom: 0;
+            }
+
     </style>
     <div class="invoice-wrap">
         <div class="invoice-inner">
@@ -229,6 +235,7 @@ NIP {{ faktura_dane.nip }}<br />
             &nbsp;</div>
     </div>
 </div>
+<div class="divFooter" style="text-align: center;width:100%">{{ footer  }}</div>
 <style>
     body {
         background: #EBEBEB;

@@ -34,14 +34,14 @@ class FakturaGeneratorService
     }
 
 
-    public function generateHTML(Faktura $fv)
+    public function generateHTML(Faktura $fv, $footer = null)
     {
-        return $this->twig->render('poznetFakturaBundle::print.html.twig', ['faktura' => $fv]);
+        return $this->twig->render('poznetFakturaBundle::print.html.twig', ['faktura' => $fv,'footer'=>$footer]);
     }
 
     public function savePDF(Faktura $fv, $footer = null)
     {
-        $this->saveHTML($fv);
+        $this->saveHTML($fv,$footer);
 
         $process = new Process(['wkhtmltopdf', '--no-background', $this->root . '/fv/' . strtr($fv->getNr(), ['/' => '-']) . '.html',$this->root . '/fv/' . strtr($fv->getNr(), ['/' => '-']) . '.pdf']);
         $process->run();
@@ -50,11 +50,11 @@ class FakturaGeneratorService
 
     }
 
-    public function saveHTML(Faktura $fv)
+    public function saveHTML(Faktura $fv, $footer = null)
     {
         $this->checkDir();
         $path = $this->root . '/fv/' . strtr($fv->getNr(), ['/' => '-']) . '.html';
-        $html = $this->generateHTML($fv);
+        $html = $this->generateHTML($fv,$footer);
         $fs = new Filesystem();
         $fs->remove($path);
         $fs->appendToFile($path, $html);
