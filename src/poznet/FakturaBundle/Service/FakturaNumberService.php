@@ -50,8 +50,10 @@ class FakturaNumberService
             return '1/' . $fv->getDataWystawienia()->format('m') . '/' . $fv->getDataWystawienia()->format('Y');
         }
         $dzis=new \DateTime('now');
+
+        // nowy miesiac , nowa numeracja
         if($fv->getDataWystawienia()->format('m')!=$dzis->format('m'))
-            return '1/' . $fv->getDataWystawienia()->format('m') . '/' . $fv->getDataWystawienia()->format('Y');
+            return '1/' . $dzis->format('m') . '/' . $fv->getDataWystawienia()->format('Y');
 
         $x = $tab[0];
         $tab[0] = (int)$x + 1;
