@@ -25,21 +25,26 @@ class FakturaNumberService
      * @param $last
      */
 
-    public function __construct(KernelInterface $kernel,EntityManagerInterface $entityManager)
+    public function __construct(KernelInterface $kernel, EntityManagerInterface $entityManager)
     {
         $this->kernel = $kernel;
-        $this->em=$entityManager;
+        $this->em = $entityManager;
     }
 
     /**
      * @param Faktura $fv
      * @return \Exception|string
      */
-    public function generateNumber(Faktura $fv)
+    public function generateNumber(Faktura $fv, $user_id = 0)
     {
-        $ostatnia=$this->em->getRepository("poznetFakturaBundle:Faktura")->findBy([],["id"=>"DESC"],1);
-        if(count($ostatnia)>0)
-            $fv=$ostatnia[0];
+        if($user_id>0){
+            $ostatnia = $this->em->getRepository("poznetFakturaBundle:Faktura")->findBy(['nabywcaId'=>$user_id], ["id" => "DESC"], 1);
+        }else{
+            $ostatnia = $this->em->getRepository("poznetFakturaBundle:Faktura")->findBy([], ["id" => "DESC"], 1);
+        }
+
+        if (count($ostatnia) > 0)
+            $fv = $ostatnia[0];
 
         if (!$fv instanceof Faktura)
             return new \Exception("Need FV Entity for  number generation");
@@ -47,20 +52,35 @@ class FakturaNumberService
 
         $tab = explode('/', $last);
         if (count($tab) == 0) {
-            return '1/' . $fv->getDataWystawienia()->format('m') . '/' . $fv->getDataWystawienia()->format('Y');
+            $txt = '1/' . $fv->getDataWystawienia()->format('m') . '/' . $fv->getDataWystawienia()->format('Y');
+            if ($user_id > 0)
+                $txt = '1/' . $user_id . '/' . $fv->getDataWystawienia()->format('m') . '/' . $fv->getDataWystawienia()->format('Y');
+            return $txt;
         }
-        $dzis=new \DateTime('now');
+        $dzis = new \DateTime('now');
 
         // nowy miesiac , nowa numeracja
-        if($fv->getDataWystawienia()->format('m')!=$dzis->format('m'))
-            return '1/' . $dzis->format('m') . '/' . $fv->getDataWystawienia()->format('Y');
+        if ($fv->getDataWystawienia()->format('m') != $dzis->format('m')) {
+            $txt = '1/' . $dzis->format('m') . '/' . $fv->getDataWystawienia()->format('Y');
+            if ($user_id > 0)
+                $txt = '1/' . $user_id . '/' . $dzis->format('m') . '/' . $fv->getDataWystawienia()->format('Y');
+            return $txt;
+        }
 
-        $x = $tab[0];
-        $tab[0] = (int)$x + 1;
-        $tab[1] = $fv->getDataWystawienia()->format('m');
-        $tab[2] = $fv->getDataWystawienia()->format('Y');
-        $nr = implode('/', $tab);
-
+        if ($user_id > 0) {
+            $x = $tab[0];
+            $tab[0] = (int)$x + 1;
+            $tab[1] = (int)$user_id;
+            $tab[2] = $fv->getDataWystawienia()->format('m');
+            $tab[3] = $fv->getDataWystawienia()->format('Y');
+            $nr = implode('/', $tab);
+        } else {
+            $x = $tab[0];
+            $tab[0] = (int)$x + 1;
+            $tab[1] = $fv->getDataWystawienia()->format('m');
+            $tab[2] = $fv->getDataWystawienia()->format('Y');
+            $nr = implode('/', $tab);
+        }
         return $nr;
     }
 
