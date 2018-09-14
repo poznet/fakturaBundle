@@ -128,6 +128,12 @@ NIP {{ faktura_dane.nip }}<br />
                                     <td align="left" style="padding-left:20px"><span class="editable-text" id="date">{{ faktura.terminPlatnosci | date('d-m-Y') }} </span></td>
                                 </tr>
                                 {% endif %}
+                                {% if faktura.uwagi!='' %}
+                                    <tr>
+                                        <td align="right"><strong><span class="editable-text" id="label_date">Uwagi: </span></strong></td>
+                                        <td align="left" style="padding-left:20px"><span class="editable-text" id="date">{{ faktura.uwagi }} </span></td>
+                                    </tr>
+                                {% endif %}
                                 <!-- Fieldl-->
                                 <tr class="field1_row">
                                     <td align="right"><strong><span class="editable-text" id="label_field1"></span></strong></td>
