@@ -47,13 +47,18 @@ class FakturaFormSubscriber implements EventSubscriberInterface
         }
 
         //dodonie dodatkowych pol
+        $tab=[];
+        if(count($fv->getPozycje())>0){
+            foreach ($fv->getPozycje() as $pozycja)
+                array_push($tab, $pozycja);
+        }else {
+            array_push($tab, new Pozycja());
+            array_push($tab, new Pozycja());
+            array_push($tab, new Pozycja());
+        }
+        $fv->setPozycje($tab);
+        $fv->calculate();
 
-        $p = new Pozycja();
-        $p2 = new Pozycja();
-        $p3 = new Pozycja();
-        $fv->getPozycje()->add($p);
-        $fv->getPozycje()->add($p2);
-        $fv->getPozycje()->add($p3);
     }
 
     // zlicza brutto pozycji

@@ -521,7 +521,7 @@ class Faktura
      */
     public function removePozycja(Pozycja $pozycja)
     {
-        $this->pozycje->removeElement($pozycja);
+       //$this->pozycje->removeElement($pozycja);
     }
 
     /**
