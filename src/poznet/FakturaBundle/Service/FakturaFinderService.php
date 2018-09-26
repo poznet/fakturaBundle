@@ -6,7 +6,7 @@
  * Time: 21:42
  */
 
-namespace FV\fakturaBundle\src\poznet\FakturaBundle\Service;
+namespace FakturaBundle\src\poznet\FakturaBundle\Service;
 
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,32 +21,32 @@ class FakturaFinderService
      * FakturaFinderService constructor.
      * @param $em
      */
-    public function __construct(EntityManagerInterface $em,$root)
+    public function __construct(EntityManagerInterface $em, $root)
     {
         $this->em = $em;
-        $this->root = $root.'/..';
+        $this->root = $root . '/..';
     }
 
-    public function findFileNameByOrderId($id){
-        $fv=$this->findByOrderId($id);
-        if($fv==null) return null;
-        $name=strtr($fv->getNr(),['/'=>'-']) . '.pdf';
-        $path = $this->root . '/fv/' . strtr($fv->getNr(),['/'=>'-']) . '.pdf';
-        if(file_exists($path))
-        return $name;
+    public function findFileNameByOrderId($id)
+    {
+        $fv = $this->findByOrderId($id);
+        if ($fv == null) return null;
+        $name = strtr($fv->getNr(), ['/' => '-']) . '.pdf';
+        $path = $this->root . '/fv/' . strtr($fv->getNr(), ['/' => '-']) . '.pdf';
+        if (file_exists($path))
+            return $name;
         return null;
 
     }
 
     public function findByOrderId($id)
     {
-        $fv=$this->em->getRepository("poznetFakturaBundle:Faktura")->findOneByZlecenieId($id);
-        if($fv instanceof  Faktura)
+        $fv = $this->em->getRepository("poznetFakturaBundle:Faktura")->findOneByZlecenieId($id);
+        if ($fv instanceof Faktura)
             return $fv;
 
         return null;
     }
-
 
 
 }

@@ -6,7 +6,7 @@
  * Time: 10:12
  */
 
-namespace FV\fakturaBundle\src\poznet\FakturaBundle\Service;
+namespace FakturaBundle\src\poznet\FakturaBundle\Service;
 
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -39,7 +39,7 @@ class FakturaGeneratorService
         return $this->twig->render('poznetFakturaBundle::print.html.twig', ['faktura' => $fv,'footer'=>$footer]);
     }
 
-    public function savePDF(Faktura $fv, $footer = null)
+    public function savePDF(Faktura $fv, $footer = ' ')
     {
         $this->saveHTML($fv,$footer);
 

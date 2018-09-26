@@ -12,9 +12,9 @@ services:
 
 
     poznet_faktura_generator:
-        class: FV\fakturaBundle\src\poznet\FakturaBundle\Service\FakturaGeneratorService
+        class: FakturaBundle\src\poznet\FakturaBundle\Service\FakturaGeneratorService
         arguments: ['@doctrine.orm.default_entity_manager', '@Twig_Environment','%kernel.root_dir%']
 
     faktura_finder_service:
-        class: FV\fakturaBundle\src\poznet\FakturaBundle\Service\FakturaFinderService
+        class: FakturaBundle\src\poznet\FakturaBundle\Service\FakturaFinderService
         arguments: ['@doctrine.orm.default_entity_manager','%kernel.root_dir%']
