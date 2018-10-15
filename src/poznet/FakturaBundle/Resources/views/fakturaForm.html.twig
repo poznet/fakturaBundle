@@ -1,135 +1,200 @@
-  {{ form_start(form) }}
-    <div class="row">
-        <div class="col-md-6 col-xs-12">{{ form_row(form.nr) }}</div>
-        <div class="col-md-6 col-xs-12">
-            {{ form_row(form.dataWystawienia) }}
-            {{ form_row(form.dataUslugi) }}
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-6 col-xs-12">{{ form_row(form.nr) }}</div>
+    <div class="col-md-6 col-xs-12">
+        {{ form_row(form.dataWystawienia) }}
+        {{ form_row(form.dataUslugi) }}
 
-        </div>
     </div>
-    <div class="row">
-        <div class="col-xs-12">
-            {{ form_row(form.nabywcaNip) }}
-            {{ form_row(form.nabywca) }}
-        </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        {{ form_row(form.nabywcaNip) }}
+        {{ form_row(form.nabywca) }}
     </div>
-    <div class="row">
-        <div class="col-xs-12">
-            <h3>Pozycje</h3>
-            <div class="row">
-                <div class="col-xs-12 col-md-6"><strong>Nazwa</strong></div>
-                <div class="col-xs-12 col-md-1 text-center"><strong>Ilosc</strong></div>
-                <div class="col-xs-12 col-md-2 text-center"><strong>Cena</strong></div>
-                <div class="col-xs-12 col-md-1 text-center"><strong>Vat</strong></div>
-                <div class="col-xs-12 col-md-1 text-center"><strong>Razem</strong></div>
-                <div class="col-xs-12 col-md-1 text-center"></div>
-            </div>
-                {% for tag in form.pozycje %}
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <h3>Pozycje</h3>
+        <div class="row">
+            <div class="col-xs-12 col-md-6"><strong>Nazwa</strong></div>
+            <div class="col-xs-12 col-md-1 text-center"><strong>Ilosc</strong></div>
+            <div class="col-xs-12 col-md-2 text-center"><strong>Cena</strong></div>
+            <div class="col-xs-12 col-md-1 text-center"><strong>Vat</strong></div>
+            <div class="col-xs-12 col-md-1 text-center"><strong>Razem</strong></div>
+            <div class="col-xs-12 col-md-1 text-center"></div>
+        </div>
+        {% for tag in form.pozycje %}
 
-                    {%  include 'poznetFakturaBundle::pozycjaForm.html.twig' %}
-                {% endfor %}
-            <div class="tags" data-prototype="{% filter escape %}
-             {{ include('poznetFakturaBundle::pozycjaForm.html.twig', { 'tag': form.pozycje.vars.prototype }) }}
+            {% include 'poznetFakturaBundle::pozycjaForm.html.twig' with {'id':loop.index} %}
+        {% endfor %}
+        <div class="tags" data-prototype="{% filter escape %}
+             {{ include('poznetFakturaBundle::pozycjaForm.html.twig', { 'tag': form.pozycje.vars.prototype ,'id':1}) }}
          {% endfilter %}">
 
-            </div>
-            <br/><br/>
         </div>
+        <br/><br/>
     </div>
-    <div class="row">
-        <div class="col-xs-12 col-md-4">{{ form_row(form.razemNetto) }}</div>
-        <div class="col-xs-12 col-md-4">{{ form_row(form.razemVat) }}</div>
-        <div class="col-xs-12 col-md-4">{{ form_row(form.razemBrutto) }}</div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-md-4">{{ form_row(form.razemNetto) }}</div>
+    <div class="col-xs-12 col-md-4">{{ form_row(form.razemVat) }}</div>
+    <div class="col-xs-12 col-md-4">{{ form_row(form.razemBrutto) }}</div>
+</div>
+<div class="row">
+    <div class="col-xs-12 col-md-6">
+        {{ form_row(form.uwagi) }}
     </div>
-    <div class="row">
-        <div class="col-xs-12 col-md-6">
-            {{ form_row(form.uwagi) }}
-        </div>
-        <div class="col-xs-12 col-md-6">
-            {{ form_row(form.platnosc) }}
-            {{ form_row(form.terminPlatnosci) }}
+    <div class="col-xs-12 col-md-6">
+        {{ form_row(form.platnosc) }}
+        {{ form_row(form.terminPlatnosci) }}
 
-        </div>
     </div>
+</div>
 
-    <div class="row">
-        <div class="col-xs-12 text-center">
-            {{ form_row(form.Zapisz) }}
-            {% if form.anuluj is defined %}
-                {{ form_row(form.anuluj) }}
-            {% endif %}
-        </div>
+<div class="row">
+    <div class="col-xs-12 text-center">
+        {{ form_row(form.Zapisz) }}
+        {% if form.anuluj is defined %}
+            {{ form_row(form.anuluj) }}
+        {% endif %}
     </div>
-    {{ form_end(form) }}
+</div>
+{{ form_end(form) }}
 
-  <script>
-      var $collectionHolder;
+<script>
+    var faktura={
+        licz: function(id){
+            var ilosc = $('input[rel-ilosc="' + id + '"]').val();
+            var cena = $('input[rel-cena="' + id + '"]').val();
+            var vat = $('input[rel-vat="' + id + '"]').val();
+            var razem = $('input[rel-razem="' + id + '"]').val();
+            var netto = ilosc * cena;
+            var brutto = netto + (netto * (vat / 100));
+            $('input[rel-razem="' + id + '"]').val(brutto.toFixed(2));
+        },
+        licz_razem:function(){
+            var netto_razem=0;
+            var vat_razem=0;
+            var razem_razem=0;
 
-      // setup an "add a tag" link
-      var $addTagButton = $('<a class="btn btn-xs btn-warning add_tag_link">Dodaj pozycje</a>');
-      var $newLinkLi = $('<div></div>').append($addTagButton);
+            for(var i=0;i<100;i++){
+                var ilosc = $('input[rel-ilosc="' + i + '"]').val();
+                var cena = $('input[rel-cena="' + i + '"]').val();
+                var vat = $('input[rel-vat="' + i + '"]').val();
+                if (( ilosc != undefined) && ( cena !=undefined)){
+                    var netto = ilosc * cena;
+                    var podatek=netto * (vat / 100);
+                    var brutto = netto + podatek;
+                    netto_razem+=netto;
+                    vat_razem+=podatek;
+                    razem_razem+=brutto;
+                }
+            }
+            $('#poznet_fakturabundle_faktura_razemNetto').val(netto_razem.toFixed(2));
+            $('#poznet_fakturabundle_faktura_razemVat').val(vat_razem.toFixed(2));
+            $('#poznet_fakturabundle_faktura_razemBrutto').val(razem_razem.toFixed(2));
 
-      function addTagFormDeleteLink($tagFormLi) {
-          var $removeFormButton = $('<a class="btn btn-xs btn-danger" style="float: right;position: relative;top:-40px;right:10px;">Usuń</a>');
-          $tagFormLi.append($removeFormButton);
+        }
 
-          $removeFormButton.on('click', function(e) {
-              // remove the li for the tag form
-              $tagFormLi.remove();
-          });
-      }
-
-
-      function addTagForm($collectionHolder, $newLinkLi) {
-          // Get the data-prototype explained earlier
-          var prototype = $collectionHolder.data('prototype');
-
-          // get the new index
-          var index = $collectionHolder.data('index');
-
-          var newForm = prototype;
-          // You need this only if you didn't set 'label' => false in your tags field in TaskType
-          // Replace '__name__label__' in the prototype's HTML to
-          // instead be a number based on how many items we have
-          // newForm = newForm.replace(/__name__label__/g, index);
-
-          // Replace '__name__' in the prototype's HTML to
-          // instead be a number based on how many items we have
-          newForm = newForm.replace(/__name__/g, index);
-
-          // increase the index with one for the next item
-          $collectionHolder.data('index', index + 1);
-
-          // Display the form in the page in an li, before the "Add a tag" link li
-          var $newFormLi = $('<div></div>').append(newForm);
-          $newLinkLi.before($newFormLi);
-
-          addTagFormDeleteLink($newFormLi);
-      }
-      $( document ).ready(function() {
-
-          // Get the ul that holds the collection of tags
-          $collectionHolder = $('div.tags');
-
-          // add a delete link to all of the existing tag form li elements
-          $collectionHolder.find('li').each(function() {
-              addTagFormDeleteLink($(this));
-          });
+    };
 
 
-          // Get the ul that holds the collection of tags
-          $collectionHolder = $('div.tags');
 
-          // add the "add a tag" anchor and li to the tags ul
-          $collectionHolder.append($newLinkLi);
+    $(document).ready(function () {
 
-          // count the current form inputs we have (e.g. 2), use that as the new
-          // index when inserting a new item (e.g. 2)
-          $collectionHolder.data('index', $collectionHolder.find(':input').length);
+        $('.poz_ilosc').on('keyup', function () {
+            var id = $(this).attr('rel');
+            faktura.licz(id);
+            faktura.licz_razem();
+        });
+        $('.poz_cena').on('keyup', function () {
+            var id = $(this).attr('rel');
+            faktura.licz(id);
+            faktura.licz_razem();
+            console.log('a');
+        });
+        $('.poz_vat').on('keyup', function () {
+            var id = $(this).attr('rel');
+            faktura.licz(id);
+            faktura.licz_razem();
+        });
+    });
 
-          $addTagButton.on('click', function(e) {
-              // add a new tag form (see next code block)
-              addTagForm($collectionHolder, $newLinkLi);
-          });
-      });
-  </script>
+
+    var $collectionHolder;
+
+    // setup an "add a tag" link
+    var $addTagButton = $('<a class="btn btn-xs btn-warning add_tag_link">Dodaj pozycje</a>');
+    var $newLinkLi = $('<div></div>').append($addTagButton);
+
+    function addTagFormDeleteLink($tagFormLi) {
+        var $removeFormButton = $('<a class="btn btn-xs btn-danger" style="float: right;position: relative;top:-40px;right:10px;">Usuń</a>');
+        $tagFormLi.append($removeFormButton);
+
+        $removeFormButton.on('click', function (e) {
+            // remove the li for the tag form
+            $tagFormLi.remove();
+        });
+    }
+
+
+    function addTagForm($collectionHolder, $newLinkLi) {
+        // Get the data-prototype explained earlier
+        var prototype = $collectionHolder.data('prototype');
+
+        // get the new index
+        var index = $collectionHolder.data('index');
+
+        var newForm = prototype;
+        // You need this only if you didn't set 'label' => false in your tags field in TaskType
+        // Replace '__name__label__' in the prototype's HTML to
+        // instead be a number based on how many items we have
+        // newForm = newForm.replace(/__name__label__/g, index);
+
+        // Replace '__name__' in the prototype's HTML to
+        // instead be a number based on how many items we have
+        newForm = newForm.replace(/__name__/g, index);
+        newForm = newForm.replace(/rel="1"/g, 'rel="' + (index + 11) + '"');
+        newForm = newForm.replace(/rel-ilosc="1"/g, 'rel-ilosc="' + (index + 11) + '"');
+        newForm = newForm.replace(/rel-cena="1"/g, 'rel-cena="' + (index + 11) + '"');
+        newForm = newForm.replace(/rel-vat="1"/g, 'rel-vat="' + (index + 11) + '"');
+        newForm = newForm.replace(/rel-razem="1"/g, 'rel-razem="' + (index + 11) + '"');
+
+
+
+        // increase the index with one for the next item
+        $collectionHolder.data('index', index + 1);
+
+        // Display the form in the page in an li, before the "Add a tag" link li
+        var $newFormLi = $('<div></div>').append(newForm);
+        $newLinkLi.before($newFormLi);
+
+        addTagFormDeleteLink($newFormLi);
+    }
+    $(document).ready(function () {
+
+        // Get the ul that holds the collection of tags
+        $collectionHolder = $('div.tags');
+
+        // add a delete link to all of the existing tag form li elements
+        $collectionHolder.find('li').each(function () {
+            addTagFormDeleteLink($(this));
+        });
+
+        // Get the ul that holds the collection of tags
+        $collectionHolder = $('div.tags');
+
+        // add the "add a tag" anchor and li to the tags ul
+        $collectionHolder.append($newLinkLi);
+
+        // count the current form inputs we have (e.g. 2), use that as the new
+        // index when inserting a new item (e.g. 2)
+        $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+        $addTagButton.on('click', function (e) {
+            // add a new tag form (see next code block)
+            addTagForm($collectionHolder, $newLinkLi);
+        });
+    });
+</script>

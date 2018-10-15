@@ -42,9 +42,9 @@ class FakturaType extends AbstractType
                 'allow_add' => true ,
                 'allow_delete' => true
             ])
-            ->add('razemNetto')
-            ->add('razemVat')
-            ->add('razemBrutto')
+            ->add('razemNetto',null,['attr'=>['class'=>'text-right']])
+            ->add('razemVat',null,['attr'=>['class'=>'text-right']])
+            ->add('razemBrutto',null,['attr'=>['class'=>'text-right']])
             ->add('platnosc',ChoiceType::class,['choices'=>[
                 'przelew'=>'przelew',
                 'gotówka'=>'gotowka',
