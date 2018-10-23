@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use poznet\FakturaBundle\Model\Pozycja;
 use Symfony\Component\Validator\Constraints as Assert;
 use Kiczort\PolishValidatorBundle\Validator\Constraints  as KiczortAssert;
+use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * Faktura
@@ -157,12 +158,11 @@ class Faktura
         $sumarazem=0;
         foreach($this->getPozycje() as $pozycja){
             $sumanetto+=$pozycja->getNetto();
-            $sumavat+=$pozycja->getVat();
+            $sumavat+=$pozycja->getNetto()*($pozycja->getVat()/100);
             $sumarazem+=$pozycja->getRazem();
 
         }
-
-        $this->setRazemNetto($sumanetto);
+         $this->setRazemNetto($sumanetto);
         $this->setRazemVat($sumavat);
         $this->setRazemSuma($sumarazem);
         $this->setRazemBrutto($sumarazem);

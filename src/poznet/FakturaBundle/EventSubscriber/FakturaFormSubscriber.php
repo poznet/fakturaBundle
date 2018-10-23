@@ -55,6 +55,13 @@ class FakturaFormSubscriber implements EventSubscriberInterface
             array_push($tab, new Pozycja());
             array_push($tab, new Pozycja());
             array_push($tab, new Pozycja());
+            array_push($tab, new Pozycja());
+            array_push($tab, new Pozycja());
+            array_push($tab, new Pozycja());
+            array_push($tab, new Pozycja());
+            array_push($tab, new Pozycja());
+            array_push($tab, new Pozycja());
+            array_push($tab, new Pozycja());
         }
         $fv->setPozycje($tab);
         $fv->calculate();

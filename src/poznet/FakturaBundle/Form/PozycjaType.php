@@ -25,11 +25,11 @@ class PozycjaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nazwa',null,['label'=>false])
-            ->add('ilosc',null,['label'=>false])
-            ->add('cena',null,['label'=>false])
-            ->add('vat',null,['label'=>false])
-            ->add('razem',null,['label'=>false])
+            ->add('nazwa',null,['label'=>false,'attr'=>['class'=>'poz_nazwa']])
+            ->add('ilosc',null,['label'=>false,'attr'=>['class'=>'poz_ilosc']])
+            ->add('cena',null,['label'=>false,'attr'=>['class'=>'poz_cena']])
+            ->add('vat',null,['label'=>false,'attr'=>['class'=>'poz_vat']])
+            ->add('razem',null,['label'=>false,'attr'=>['class'=>'poz_razem']])
 
 
             ;
