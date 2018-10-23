@@ -33,7 +33,7 @@ class FakturaType extends AbstractType
         $builder
             ->add('nr')
             ->add('dataWystawienia',null,['widget'=>'single_text'])
-            ->add('dataUslugi',null,['widget'=>'single_text'])
+            ->add('dataUslugi',null,['widget'=>'single_text','label'=>'Data wykonania usługi'])
             ->add('nabywca')
             ->add('nabywcaNip')
             ->add('pozycje',CollectionType::class,[
