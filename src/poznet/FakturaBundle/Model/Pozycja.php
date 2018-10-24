@@ -8,6 +8,7 @@
 
 namespace poznet\FakturaBundle\Model;
 
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Class PozycjaModel
  * @package FakturaBundle\src\poznet\FakturaBundle\Model
@@ -19,11 +20,53 @@ class Pozycja
     const VAT8 = 8;
 
     private $nazwa;
+    /**
+     * @var
+     * @Assert\Type(
+     *     type="integer",
+     *     message="Ta wartość nie jest prawidłowa"
+     * )
+     */
     private $ilosc;
+    /**
+     * @var
+     * @Assert\Type(
+     *     type="integer",
+     *     message="Ta wartość nie jest prawidłowa"
+     * )
+     */
     private $cena;
+    /**
+     * @var
+     *  @Assert\Type(
+     *     type="integer",
+     *     message="Ta wartość nie jest prawidłowa"
+     * )
+     */
     private $netto;
+    /**
+     * @var int
+     *  @Assert\Type(
+     *     type="integer",
+     *     message="Ta wartość nie jest prawidłowa"
+     * )
+     */
     private $vat;
+    /**
+     * @var
+     *  @Assert\Type(
+     *     type="integer",
+     *     message="Ta wartość nie jest prawidłowa"
+     * )
+     */
     private $brutto;
+    /**
+     * @var
+     *  @Assert\Type(
+     *     type="integer",
+     *     message="Ta wartość nie jest prawidłowa"
+     * )
+     */
     private $razem;
 
 

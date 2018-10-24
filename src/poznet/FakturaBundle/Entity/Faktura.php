@@ -95,21 +95,30 @@ class Faktura
 
     /**
      * @var string
-     *
+     * @Assert\Type(
+     *     type="integer",
+     *     message="Ta wartość nie jest prawidłowa"
+     * )
      * @ORM\Column(name="razem_netto", type="string", length=255)
      */
     private $razemNetto;
 
     /**
      * @var string
-     *
+     * @Assert\Type(
+     *     type="integer",
+     *     message="Ta wartość nie jest prawidłowa"
+     * )
      * @ORM\Column(name="razem_vat", type="string", length=255)
      */
     private $razemVat;
 
     /**
      * @var string
-     *
+     * @Assert\Type(
+     *     type="float",
+     *     message="Ta wartość nie jest prawidłowa"
+     * )
      * @ORM\Column(name="razem_suma", type="string", length=255)
      */
     private $razemBrutto;

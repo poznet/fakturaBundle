@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -42,9 +43,9 @@ class FakturaType extends AbstractType
                 'allow_add' => true ,
                 'allow_delete' => true
             ])
-            ->add('razemNetto',null,['attr'=>['class'=>'text-right']])
-            ->add('razemVat',null,['attr'=>['class'=>'text-right']])
-            ->add('razemBrutto',null,['attr'=>['class'=>'text-right']])
+            ->add('razemNetto',TextType::class,['attr'=>['class'=>'text-right' ]])
+            ->add('razemVat',TextType::class,['attr'=>['class'=>'text-right' ]])
+            ->add('razemBrutto',TextType::class,['attr'=>['class'=>'text-right' ]])
             ->add('platnosc',ChoiceType::class,['choices'=>[
                 'przelew'=>'przelew',
                 'gotówka'=>'gotowka',

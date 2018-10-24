@@ -9,6 +9,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -25,11 +26,11 @@ class PozycjaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nazwa',null,['label'=>false,'attr'=>['class'=>'poz_nazwa']])
-            ->add('ilosc',null,['label'=>false,'attr'=>['class'=>'poz_ilosc']])
-            ->add('cena',null,['label'=>false,'attr'=>['class'=>'poz_cena']])
-            ->add('vat',null,['label'=>false,'attr'=>['class'=>'poz_vat']])
-            ->add('razem',null,['label'=>false,'attr'=>['class'=>'poz_razem']])
+            ->add('nazwa',TextType::class,['label'=>false,'attr'=>['class'=>'poz_nazwa'],'required'=>false])
+            ->add('ilosc',TextType::class,['label'=>false,'attr'=>['class'=>'poz_ilosc'],'required'=>false])
+            ->add('cena',TextType::class,['label'=>false,'attr'=>['class'=>'poz_cena'],'required'=>false])
+            ->add('vat',TextType::class,['label'=>false,'attr'=>['class'=>'poz_vat'],'required'=>false])
+            ->add('razem',TextType::class,['label'=>false,'attr'=>['class'=>'poz_razem'],'required'=>false])
 
 
             ;
