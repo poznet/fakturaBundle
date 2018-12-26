@@ -152,6 +152,13 @@ class Faktura
      */
     private $status;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="wystawil", type="string", length=255, nullable=true)
+     */
+    private $wystawil;
+
     public function __construct()
     {
         $this->dataUslugi=new \DateTime('now');
@@ -547,6 +554,22 @@ class Faktura
     public function setStatus($status)
     {
         $this->status = $status;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWystawil()
+    {
+        return $this->wystawil;
+    }
+
+    /**
+     * @param string $wystawil
+     */
+    public function setWystawil($wystawil)
+    {
+        $this->wystawil = $wystawil;
     }
 
 
