@@ -74,7 +74,7 @@
 Data wystawienia: {{ faktura.dataWystawienia | date('d-m-Y') }}<br />
 Data wykonania usługi: {{ faktura.dataUslugi | date('d-m-Y') }}<br />
 <br />
-<b>Sprzedawca:</b><br />{% if faktura_dane is defined %}
+<b>Sprzedawca : </b><br />{% if faktura_dane is defined %}
 <br />
                                             {{ faktura_dane.adres1 }}<br />
                                             {{ faktura_dane.adres2 }}<br />
