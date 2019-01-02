@@ -47,11 +47,16 @@
         .items-table th { background:#f5f5f5;}
         .totals-row .wide-cell { border:1px solid #fff; border-right:1px solid #555555; border-top:1px solid #555555}
 
-            div.divFooter {
-                position: fixed;
-                bottom: 0;
-            }
-
+        div.divFooter {
+            position: fixed;
+            bottom: 0;
+        }
+        .tabela-podatki{
+            margin-top:25px;
+        }
+        .vat{
+            text-align:center !important;
+        }
     </style>
     <div class="invoice-wrap">
         <div class="invoice-inner">
@@ -66,16 +71,16 @@
                                 <tr>
                                     <td><span class="editable-area" id="business_info">
 
-Data wystawienie {{ faktura.dataWystawienia | date('d-m-Y') }}<br />
-Data sprzedazy {{ faktura.dataUslugi | date('d-m-Y') }}<br />
+Data wystawienia: {{ faktura.dataWystawienia | date('d-m-Y') }}<br />
+Data wykonania usługi: {{ faktura.dataUslugi | date('d-m-Y') }}<br />
 <br />
-{% if faktura_dane is defined %}
-<b>{{ faktura_dane.nazwa }}</b><br />
-{{ faktura_dane.adres1 }}<br />
-{{ faktura_dane.adres2 }}<br />
+<b>Sprzedawca:</b><br />{% if faktura_dane is defined %}
+<br />
+                                            {{ faktura_dane.adres1 }}<br />
+                                            {{ faktura_dane.adres2 }}<br />
 NIP {{ faktura_dane.nip }}<br />
-Nr.konta:  {{ faktura_dane.konto }}<br />
-{% endif %}
+Konto bankowe:  {{ faktura_dane.konto }}<br />
+                                            {% endif %}
 
                                         </span></td>
                                 </tr>
@@ -122,15 +127,15 @@ Nr.konta:  {{ faktura_dane.konto }}<br />
                             <table border="0" cellpadding="0" cellspacing="0">
                                 <tbody>
                                 <tr>
-                                    <td align="right"><strong><span class="editable-text" id="label_invoice_no">Płatność </span></strong></td>
+                                    <td align="right"><strong><span class="editable-text" id="label_invoice_no">Płatność: </span></strong></td>
                                     <td align="left" style="padding-left:20px"><span class="editable-text" id="no">{{ faktura.platnosc }}</span></td>
                                 </tr>
 
                                 {% if faktura.platnosc!='Zapłacono' %}
-                                <tr>
-                                    <td align="right"><strong><span class="editable-text" id="label_date">Termin płatności </span></strong></td>
-                                    <td align="left" style="padding-left:20px"><span class="editable-text" id="date">{{ faktura.terminPlatnosci | date('d-m-Y') }} </span></td>
-                                </tr>
+                                    <tr>
+                                        <td align="right"><strong><span class="editable-text" id="label_date">Termin płatności: </span></strong></td>
+                                        <td align="left" style="padding-left:20px"><span class="editable-text" id="date">{{ faktura.terminPlatnosci | date('d-m-Y') }} </span></td>
+                                    </tr>
                                 {% endif %}
                                 {% if faktura.uwagi!='' %}
                                     <tr>
@@ -200,29 +205,33 @@ Nr.konta:  {{ faktura_dane.konto }}<br />
             <div id="items-list"><table class="table table-bordered table-condensed table-striped items-table">
                     <thead>
                     <tr>
-                        <th>Produkt</th>
+                        <th>Nazwa towaru lub usługi</th>
                         <th>Ilość</th>
-                        <th>Kwota netto</th>
+                        <th>Cena netto</th>
+                        <th>Wartość netto</th>
+                        <th>Kwota VAT</th>
                         <th>Stawka VAT</th>
-                        <th width="100" style="font-align:center;">Razem Brutto</th>
+                        <th width="100" style="font-align:center;">Wartość brutto</th>
                     </tr>
                     </thead>
                     <tfoot>
                     <tr class="totals-row">
-                        <td colspan="3" class="wide-cell"></td>
+                        <td colspan="5" class="wide-cell"></td>
                         <td><strong>RAZEM</strong></td>
-                        <td coslpan="3" style="text-align:right;font-weight:bold;">{{ faktura.razemBrutto |number_format(2, '.', ',')}} zł</td>
+                        <td coslpan="2" style="text-align:right;font-weight:bold;">{{ faktura.razemBrutto |number_format(2, '.', ',')}} zł</td>
                     </tr>
                     </tbody>
                     <tbody>
                     {% for pozycja in faktura.pozycje %}
-                    <tr>
-                        <td>{{ pozycja.nazwa }}</td>
-                        <td style="text-align:center">{{ pozycja.ilosc }}</td>
-                        <td style="text-align:right">{{ pozycja.netto  |number_format(2, '.', ',')}} zł</td>
-                        <td style="text-align:center">{{ pozycja.vat }} %</td>
-                        <td width="100" style="text-align:right">{{ pozycja.razem  |number_format(2, '.', ',')}} zł</td>
-                    </tr>
+                        <tr>
+                            <td>{{ pozycja.nazwa }}</td>
+                            <td style="text-align:center">{{ pozycja.ilosc }}</td>
+                            <td style="text-align:center">{{ pozycja.cena |number_format(2, '.', ',') }}</td>
+                            <td style="text-align:center">{{ pozycja.netto  |number_format(2, '.', ',')}} zł</td>
+                            <td style="text-align:center">{{ (pozycja.netto * (pozycja.vat/100) ) |  number_format(2, '.', ',') }} zł</td>
+                            <td style="text-align:center">{{ pozycja.vat }} %</td>
+                            <td width="100" style="text-align:right">{{ pozycja.razem  |number_format(2, '.', ',')}} zł</td>
+                        </tr>
                     {% endfor %}
                     </tbody>
                 </table></div>
@@ -231,15 +240,37 @@ Nr.konta:  {{ faktura_dane.konto }}<br />
                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                     <tbody>
                     <tr>
+                        <td>
+                            Do zapłaty:  {{ faktura.razemBrutto |number_format(2, '.', ',')}} zł   <br/>
+
+                        </td>
+                    </tr>
+                    <tr><td> <br></td></tr>
+                    <tr>
+                        <td>
+                            Zapłacono: 0 zł.<br>
+                            Pozostaje do zapłaty: {{ faktura.razemBrutto |number_format(2, '.', ',')}} zł
+                        </td>
+                    </tr>
+                </table>
+                <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                    <tbody>
+                    <tr>
                         <td width="50%">
+                            <div class="editable-area" id="notes" style="text-align: center;">
+                                <br><br><br>
+                                ...........................................
+                                <br>
+                                <b>Odebrał</b>
+                            </div>
                         </td>
                         <td width="50%">
                             <div class="editable-area" id="notes" style="text-align: center;">
                                 <br><br>
                                 {{ faktura.wystawil }}
                                 <br>
-
-                                <b>Podpis osoby upoważnionej do wystawienia Faktury </b>
+                                ...........................................<br />
+                                <b>Wystawił</b>
                             </div>
                         </td>
                     </tr>
