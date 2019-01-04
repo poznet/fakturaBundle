@@ -96,7 +96,7 @@ class Faktura
     /**
      * @var string
      * @Assert\Type(
-     *     type="integer",
+     *     type="float",
      *     message="Ta wartość nie jest prawidłowa"
      * )
      * @ORM\Column(name="razem_netto", type="string", length=255)
@@ -106,7 +106,7 @@ class Faktura
     /**
      * @var string
      * @Assert\Type(
-     *     type="integer",
+     *     type="float",
      *     message="Ta wartość nie jest prawidłowa"
      * )
      * @ORM\Column(name="razem_vat", type="string", length=255)

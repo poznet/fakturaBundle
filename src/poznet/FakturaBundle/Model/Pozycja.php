@@ -145,8 +145,12 @@ class Pozycja
      */
     public function getNetto()
     {
-        return $this->netto;
         $this->calculate();
+        if($this->netto==0){
+            return($this->ilosc*$this->cena);
+        }
+        return $this->netto;
+
     }
 
     /**

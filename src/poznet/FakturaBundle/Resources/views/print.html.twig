@@ -222,11 +222,11 @@ Konto bankowe:  {{ faktura_dane.konto }}<br />
                     </tr>
                     </tbody>
                     <tbody>
-                    {% for pozycja in faktura.pozycje %}
+                    {% for pozycja in faktura.pozycje if pozycja.nazwa!='' and pozycja.razem >0 %}
                         <tr>
                             <td>{{ pozycja.nazwa }}</td>
                             <td style="text-align:center">{{ pozycja.ilosc }}</td>
-                            <td style="text-align:center">{{ pozycja.cena |number_format(2, '.', ',') }}</td>
+                            <td style="text-align:center">{{ pozycja.cena |number_format(2, '.', ',') }} zł</td>
                             <td style="text-align:center">{{ pozycja.netto  |number_format(2, '.', ',')}} zł</td>
                             <td style="text-align:center">{{ (pozycja.netto * (pozycja.vat/100) ) |  number_format(2, '.', ',') }} zł</td>
                             <td style="text-align:center">{{ pozycja.vat }} %</td>
