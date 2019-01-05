@@ -99,7 +99,7 @@ class Faktura
      *     type="float",
      *     message="Ta wartość nie jest prawidłowa"
      * )
-     * @ORM\Column(name="razem_netto", type="string", length=255)
+     * @ORM\Column(name="razem_netto", type="float", length=255)
      */
     private $razemNetto;
 
@@ -109,7 +109,7 @@ class Faktura
      *     type="float",
      *     message="Ta wartość nie jest prawidłowa"
      * )
-     * @ORM\Column(name="razem_vat", type="string", length=255)
+     * @ORM\Column(name="razem_vat", type="float", length=255)
      */
     private $razemVat;
 
@@ -119,7 +119,7 @@ class Faktura
      *     type="float",
      *     message="Ta wartość nie jest prawidłowa"
      * )
-     * @ORM\Column(name="razem_suma", type="string", length=255)
+     * @ORM\Column(name="razem_suma", type="float", length=255)
      */
     private $razemBrutto;
 
@@ -348,7 +348,7 @@ class Faktura
      */
     public function setRazemNetto($razemNetto)
     {
-        $this->razemNetto = $razemNetto;
+        $this->razemNetto = (float)$razemNetto;
 
         return $this;
     }
@@ -372,7 +372,7 @@ class Faktura
      */
     public function setRazemVat($razemVat)
     {
-        $this->razemVat = $razemVat;
+        $this->razemVat = (float)$razemVat;
 
         return $this;
     }
@@ -396,7 +396,7 @@ class Faktura
      */
     public function setRazemSuma($razemSuma)
     {
-        $this->razemSuma = $razemSuma;
+        $this->razemSuma = (float)$razemSuma;
 
         return $this;
     }
