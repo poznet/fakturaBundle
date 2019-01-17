@@ -9,6 +9,8 @@
 namespace FakturaBundle\src\poznet\FakturaBundle\EventSubscriber;
 
 
+use FakturaBundle\src\poznet\FakturaBundle\Helper\StawkiPodatkuHelper;
+use FakturaBundle\src\poznet\FakturaBundle\Model\Stawki;
 use poznet\FakturaBundle\Model\Pozycja;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
@@ -20,9 +22,11 @@ class FakturaFormSubscriber implements EventSubscriberInterface
 {
     private $kernel;
 
+
     public function __construct(KernelInterface $kernel)
     {
         $this->kernel = $kernel;
+
 
     }
 
@@ -47,11 +51,11 @@ class FakturaFormSubscriber implements EventSubscriberInterface
         }
 
         //dodonie dodatkowych pol
-        $tab=[];
-        if(count($fv->getPozycje())>0){
+        $tab = [];
+        if (count($fv->getPozycje()) > 0) {
             foreach ($fv->getPozycje() as $pozycja)
                 array_push($tab, $pozycja);
-        }else {
+        } else {
             array_push($tab, new Pozycja());
             array_push($tab, new Pozycja());
             array_push($tab, new Pozycja());
@@ -78,8 +82,8 @@ class FakturaFormSubscriber implements EventSubscriberInterface
         $fv = $event->getData();
         $pozycje = $fv->getPozycje();
         $razem = 0;
-        $razemVat=0;
-        $razemNetto=0;
+        $razemVat = 0;
+        $razemNetto = 0;
         foreach ($pozycje as $p) {
             $p->calculate();
             if ($p->getRazem() == Null) {
@@ -87,9 +91,12 @@ class FakturaFormSubscriber implements EventSubscriberInterface
                 continue;
             }
 
+
             $razem += $p->getRazem();
-            $razemVat += ($p->getNetto()* $p->getVat())/100;
-            $razemNetto+= $p->getNetto();
+            $razemVat += ($p->getNetto() * $p->getVat()) / 100;
+            $razemNetto += $p->getNetto();
+
+
 
         }
         $fv->setPozycje($pozycje);
@@ -97,8 +104,11 @@ class FakturaFormSubscriber implements EventSubscriberInterface
         $fv->setRazemVat($razemVat);
         $fv->setRazemSuma($razem);
         $fv->setRazemBrutto($razem);
+        $fv->setStawki($this->stawki);
         $event->setData($fv);
 
     }
+
+
 
 }

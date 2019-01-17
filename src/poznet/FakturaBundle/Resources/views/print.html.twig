@@ -4,58 +4,162 @@
     <title>Faktura {{ faktura.nr }}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <style type="text/css">
-        .totals-row td {
-            border-right:none !important;
-            border-left:none !important;
+        body {
+            font: 11px Tahoma;
         }
 
+        .totals-row td {
+            border-right: none !important;
+            border-left: none !important;
+        }
 
         td {
             white-space: nowrap;
+            font: 12px tahoma;
         }
-        .items-table td ,#notes { white-space:normal;}
-        .totals-row td strong,.items-table th {
-            white-space:nowrap;
+
+        .items-table td, #notes {
+            white-space: normal;
+        }
+
+        .totals-row td strong, .items-table th {
+            white-space: nowrap;
         }
     </style>
     <style type="text/css">
-        .is_logo {display:none;}
+        .is_logo {
+            display: none;
+        }
     </style>
 </head>
 <body>
 <div id="editor" class="edit-mode-wrap" style="margin-top: 20px">
     <style type="text/css">
-        .is_logo {display:none;}
-    </style><style type="text/css">* { margin:0; padding:0; }
-        body { background:#fff; font-family:Arial, Helvetica, sans-serif; font-size:12px; line-height:20px; }
-        #extra {text-align: right; font-size: 22px;  font-weight: 700}
-        .invoice-wrap { width:700px; margin:0 auto; background:#FFF; color:#000;    box-shadow:none !important; }
-        .invoice-inner { margin:0 15px; padding:20px 0 }
-        .invoice-address { border-top: 3px double #000000; margin: 25px 0; padding-top: 25px; }
-        .bussines-name { font-size:18px; font-weight:100 }
-        .invoice-name { font-size:22px; font-weight:700 }
-        .listing-table th { background-color: #e5e5e5; border-bottom: 1px solid #555555; border-top: 1px solid #555555; font-weight: bold; text-align:left; padding:6px 4px }
-        .listing-table td { border-bottom: 1px solid #555555; text-align:left; padding:5px 6px; vertical-align:top }
-        .total-table td { border-left: 1px solid #555555; }
-        .total-row { background-color: #e5e5e5; border-bottom: 1px solid #555555; border-top: 1px solid #555555; font-weight: bold; }
-        .row-items { margin:5px 0; display:block }
-        .notes-block { margin:50px 0 0 0 }
+        .is_logo {
+            display: none;
+        }
+    </style>
+    <style type="text/css">* {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #fff;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 12px;
+            line-height: 20px;
+        }
+
+        #extra {
+            text-align: right;
+            font-size: 22px;
+            font-weight: 700
+        }
+
+        .invoice-wrap {
+            width: 700px;
+            margin: 0 auto;
+            background: #FFF;
+            color: #000;
+            box-shadow: none !important;
+        }
+
+        .invoice-inner {
+            margin: 0 15px;
+            padding: 20px 0
+        }
+
+        .invoice-address {
+            border-top: 3px double #000000;
+            margin: 25px 0;
+            padding-top: 25px;
+        }
+
+        .bussines-name {
+            font-size: 18px;
+            font-weight: 100
+        }
+
+        .invoice-name {
+            font-size: 22px;
+            font-weight: 700
+        }
+
+        .listing-table th {
+            background-color: #e5e5e5;
+            border-bottom: 1px solid #555555;
+            border-top: 1px solid #555555;
+            font-weight: bold;
+            text-align: left;
+            padding: 6px 4px
+        }
+
+        .listing-table td {
+            border-bottom: 1px solid #555555;
+            text-align: left;
+            padding: 5px 6px;
+            vertical-align: top
+        }
+
+        .total-table td {
+            border-left: 1px solid #555555;
+        }
+
+        .total-row {
+            background-color: #e5e5e5;
+            border-bottom: 1px solid #555555;
+            border-top: 1px solid #555555;
+            font-weight: bold;
+        }
+
+        .row-items {
+            margin: 5px 0;
+            display: block
+        }
+
+        .notes-block {
+            margin: 50px 0 0 0
+        }
+
         /*tables*/
-        table td { vertical-align:top}
-        .items-table { border:1px solid #1px solid #555555; border-collapse:collapse; width:100%}
-        .items-table td, .items-table th { border:1px solid #555555; padding:4px 5px ; text-align:left}
-        .items-table th { background:#f5f5f5;}
-        .totals-row .wide-cell { border:1px solid #fff; border-right:1px solid #555555; border-top:1px solid #555555}
+        table td {
+            vertical-align: top
+        }
+
+        .items-table {
+            border: 1px solid #1px solid #555555;
+            border-collapse: collapse;
+            width: 100%
+        }
+
+        .items-table td, .items-table th {
+            border: 1px solid #555555;
+            padding: 4px 5px;
+            text-align: left
+        }
+
+        .items-table th {
+            background: #f5f5f5;
+        }
+
+        .totals-row .wide-cell {
+            border: 1px solid #fff;
+            border-right: 1px solid #555555;
+            border-top: 1px solid #555555
+        }
 
         div.divFooter {
             position: fixed;
             bottom: 0;
         }
-        .tabela-podatki{
-            margin-top:25px;
+
+        .tabela-podatki {
+            margin-top: 25px;
         }
-        .vat{
-            text-align:center !important;
+
+        .vat {
+            text-align: center !important;
         }
     </style>
     <div class="invoice-wrap">
@@ -63,7 +167,9 @@
             <table border="0" cellpadding="0" cellspacing="0" width="100%">
                 <tbody>
                 <tr>
-                    <td align="left" class="is_logo" valign="top"><img class="editable-area" height="102" id="logo" src="/img/uploads/logos/default-logo.png" width="122" /></td>
+                    <td align="left" class="is_logo" valign="top"><img class="editable-area" height="102" id="logo"
+                                                                       src="/img/uploads/logos/default-logo.png"
+                                                                       width="122"/></td>
                     <td align="right" valign="top">
                         <div class="business_info">
                             <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -71,15 +177,15 @@
                                 <tr>
                                     <td><span class="editable-area" id="business_info">
 
-Data wystawienia: {{ faktura.dataWystawienia | date('d-m-Y') }}<br />
-Data wykonania usługi: {{ faktura.dataUslugi | date('d-m-Y') }}<br />
-<br />
-<b>Sprzedawca: </b><br />{% if faktura_dane is defined %}
-<br />                                      {{ faktura_dane.nazwa }} <br />
-                                            {{ faktura_dane.adres1 }}<br />
-                                            {{ faktura_dane.adres2 }}<br />
-NIP: {{ faktura_dane.nip }}<br />
-Konto bankowe:  {{ faktura_dane.konto }}<br />
+Data wystawienia: {{ faktura.dataWystawienia | date('d-m-Y') }}<br/>
+Data wykonania usługi: {{ faktura.dataUslugi | date('d-m-Y') }}<br/>
+<br/>
+<b>Sprzedawca: </b><br/>{% if faktura_dane is defined %}
+<br/>                                      {{ faktura_dane.nazwa }} <br/>
+                                            {{ faktura_dane.adres1 }}<br/>
+                                            {{ faktura_dane.adres2 }}<br/>
+NIP: {{ faktura_dane.nip }}<br/>
+Konto bankowe:  {{ faktura_dane.konto }}<br/>
                                             {% endif %}
 
                                         </span></td>
@@ -103,15 +209,19 @@ Konto bankowe:  {{ faktura_dane.konto }}<br />
                             <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                 <tbody>
                                 <tr>
-                                    <td style="" valign="top" width=""><strong><span class="editable-text" id="label_bill_to">Nabywca: </span></strong></td>
+                                    <td style="" valign="top" width=""><strong><span class="editable-text"
+                                                                                     id="label_bill_to">Nabywca: </span></strong>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td valign="top">
-                                        <div class="client_info" >
+                                        <div class="client_info">
                                             <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                 <tbody>
                                                 <tr>
-                                                    <td style="padding-bottom:25px; " width="100%"><span class="editable-area" id="client_info">{{ faktura.nabywca |nl2br|raw }}<br />
+                                                    <td style="padding-bottom:25px; " width="100%"><span
+                                                                class="editable-area"
+                                                                id="client_info">{{ faktura.nabywca |nl2br|raw }}<br/>
                                                             NIP: {{ faktura.nabywcaNip }}
 </span></td>
                                                 </tr>
@@ -127,72 +237,33 @@ Konto bankowe:  {{ faktura_dane.konto }}<br />
                             <table border="0" cellpadding="0" cellspacing="0">
                                 <tbody>
                                 <tr>
-                                    <td align="right"><strong><span class="editable-text" id="label_invoice_no">Płatność: </span></strong></td>
-                                    <td align="left" style="padding-left:20px"><span class="editable-text" id="no">{{ faktura.platnosc }}</span></td>
+                                    <td align="right"><strong><span class="editable-text" id="label_invoice_no">Płatność: </span></strong>
+                                    </td>
+                                    <td align="left" style="padding-left:20px"><span class="editable-text"
+                                                                                     id="no">{{ faktura.platnosc }}</span>
+                                    </td>
                                 </tr>
 
                                 {% if faktura.platnosc!='Zapłacono' %}
                                     <tr>
-                                        <td align="right"><strong><span class="editable-text" id="label_date">Termin płatności: </span></strong></td>
-                                        <td align="left" style="padding-left:20px"><span class="editable-text" id="date">{{ faktura.terminPlatnosci | date('d-m-Y') }} </span></td>
+                                        <td align="right"><strong><span class="editable-text" id="label_date">Termin płatności: </span></strong>
+                                        </td>
+                                        <td align="left" style="padding-left:20px"><span class="editable-text"
+                                                                                         id="date">{{ faktura.terminPlatnosci | date('d-m-Y') }} </span>
+                                        </td>
                                     </tr>
                                 {% endif %}
                                 {% if faktura.uwagi!='' %}
                                     <tr>
-                                        <td align="right"><strong><span class="editable-text" id="label_date">Uwagi: </span></strong></td>
-                                        <td align="left" style="padding-left:20px"><span class="editable-text" id="date">{{ faktura.uwagi }} </span></td>
+                                        <td align="right"><strong><span class="editable-text"
+                                                                        id="label_date">Uwagi: </span></strong></td>
+                                        <td align="left" style="padding-left:20px"><span class="editable-text"
+                                                                                         id="date">{{ faktura.uwagi }} </span>
+                                        </td>
                                     </tr>
                                 {% endif %}
                                 <!-- Fieldl-->
-                                <tr class="field1_row">
-                                    <td align="right"><strong><span class="editable-text" id="label_field1"></span></strong></td>
-                                    <td align="left" style="padding-left:20px;"><span class="editable-text" id="field1_value"></span></td>
-                                </tr>
-                                <!-- /Fieldl--><!-- Field2-->
-                                <tr class="field2_row">
-                                    <td align="right"><strong><span class="editable-text" id="label_field2"></span></strong></td>
-                                    <td align="left" style="padding-left:20px;"><span class="editable-text" id="field2_value"></span></td>
-                                </tr>
-                                <!-- /Field2--><!-- Field3-->
-                                <tr class="field3_row">
-                                    <td align="right"><strong><span class="editable-text" id="label_field3"></span></strong></td>
-                                    <td align="left" style="padding-left:20px;"><span class="editable-text" id="field3_value"></span></td>
-                                </tr>
-                                <!-- /Field3--><!-- Field4-->
-                                <tr class="field4_row">
-                                    <td align="right"><strong><span class="editable-text" id="label_field4"></span></strong></td>
-                                    <td align="left" style="padding-left:20px;"><span class="editable-text" id="field4_value"></span></td>
-                                </tr>
-                                <!-- /Field4--><!-- Field5-->
-                                <tr class="field5_row">
-                                    <td align="right"><strong><span class="editable-text" id="label_field5"></span></strong></td>
-                                    <td align="left" style="padding-left:20px;"><span class="editable-text" id="field5_value"></span></td>
-                                </tr>
-                                <!-- /Field5--><!-- Field6-->
-                                <tr class="field6_row">
-                                    <td align="right"><strong><span class="editable-text" id="label_field6"></span></strong></td>
-                                    <td align="left" style="padding-left:20px;"><span class="editable-text" id="field6_value"></span></td>
-                                </tr>
-                                <!-- /Field6--><!-- Field7-->
-                                <tr class="field7_row">
-                                    <td align="right"><strong><span class="editable-text" id="label_field7"></span></strong></td>
-                                    <td align="left" style="padding-left:20px;"><span class="editable-text" id="field7_value"></span></td>
-                                </tr>
-                                <!-- /Field7--><!-- Field8-->
-                                <tr class="field8_row">
-                                    <td align="right"><strong><span class="editable-text" id="label_field8"></span></strong></td>
-                                    <td align="left" style="padding-left:20px;"><span class="editable-text" id="field8_value"></span></td>
-                                </tr>
-                                <!-- /Field8--><!-- Field9-->
-                                <tr class="field9_row">
-                                    <td align="right"><strong><span class="editable-text" id="label_field9"></span></strong></td>
-                                    <td align="left" style="padding-left:20px;"><span class="editable-text" id="field9_value"></span></td>
-                                </tr>
-                                <!-- /Field9--><!-- Field10-->
-                                <tr class="field10_row">
-                                    <td align="right"><strong><span class="editable-text" id="label_field10"></span></strong></td>
-                                    <td align="left" style="padding-left:20px;"><span class="editable-text" id="field9_value"></span></td>
-                                </tr>
+
                                 <!-- /Field9-->
                                 </tbody>
                             </table>
@@ -202,9 +273,11 @@ Konto bankowe:  {{ faktura_dane.konto }}<br />
                 </table>
             </div>
 
-            <div id="items-list"><table class="table table-bordered table-condensed table-striped items-table">
+            <div id="items-list">
+                <table class="table table-bordered table-condensed table-striped items-table">
                     <thead>
                     <tr>
+                        <th>L.p.</th>
                         <th>Nazwa towaru lub usługi</th>
                         <th>Ilość</th>
                         <th>Cena netto</th>
@@ -216,40 +289,91 @@ Konto bankowe:  {{ faktura_dane.konto }}<br />
                     </thead>
                     <tfoot>
                     <tr class="totals-row">
-                        <td colspan="5" class="wide-cell"></td>
+                        <td colspan="6" class="wide-cell"></td>
                         <td><strong>RAZEM</strong></td>
-                        <td coslpan="2" style="text-align:right;font-weight:bold;">{{ faktura.razemBrutto |number_format(2, '.', ',')}} zł</td>
+                        <td coslpan="2"
+                            style="text-align:right;font-weight:bold;">{{ faktura.razemBrutto |number_format(2, '.', ',') }}
+                            zł
+                        </td>
                     </tr>
                     </tbody>
                     <tbody>
                     {% for pozycja in faktura.pozycje if pozycja.nazwa!='' and pozycja.razem >0 %}
                         <tr>
+                            <td>{{ loop.index }}</td>
                             <td>{{ pozycja.nazwa }}</td>
                             <td style="text-align:center">{{ pozycja.ilosc }}</td>
                             <td style="text-align:center">{{ pozycja.cena |number_format(2, '.', ',') }} zł</td>
-                            <td style="text-align:center">{{ pozycja.netto  |number_format(2, '.', ',')}} zł</td>
-                            <td style="text-align:center">{{ (pozycja.netto * (pozycja.vat/100) ) |  number_format(2, '.', ',') }} zł</td>
+                            <td style="text-align:center">{{ pozycja.netto  |number_format(2, '.', ',') }} zł</td>
+                            <td style="text-align:center">{{ (pozycja.netto * (pozycja.vat/100) ) |  number_format(2, '.', ',') }}
+                                zł
+                            </td>
                             <td style="text-align:center">{{ pozycja.vat }} %</td>
-                            <td width="100" style="text-align:right">{{ pozycja.razem  |number_format(2, '.', ',')}} zł</td>
+                            <td width="100" style="text-align:right">{{ pozycja.razem  |number_format(2, '.', ',') }}
+                                zł
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>
-                </table></div>
+                </table>
+            </div>
+
+
+            {% if stawki is defined %}
+                <div style="width:50%;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="50%" class="items-table">
+                        <thead>
+                        <tr>
+                            <th>Netto</th>
+                            <th width="25%">VAT kwota</th>
+                            <th>Brutto</th>
+                            <th width="15%">VAT stawka</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% set netto=0 %}
+                        {% set vat=0 %}
+                        {% set brutto=0 %}
+
+
+                        {% for stawka in stawki %}
+                            <tr>
+                                <td>{{ stawka.netto  |number_format(2, '.', ',') }} zł</td>
+                                <td>{{ stawka.vat  |number_format(2, '.', ',') }} zł</td>
+                                <td>{{ stawka.brutto  |number_format(2, '.', ',') }} zł</td>
+                                <td class="vat">{{ stawka.nazwa }}</td>
+                            </tr>
+                            {% set netto=netto + stawka.netto %}
+                            {% set vat=vat + stawka.vat %}
+                            {% set brutto= brutto + stawka.brutto %}
+                        {% endfor %}
+                        <tr>
+                            <td><strong>{{ netto  |number_format(2, '.', ',') }} zł</strong></td>
+                            <td><strong>{{ vat  |number_format(2, '.', ',') }} zł</strong></td>
+                            <td><strong>{{ brutto  |number_format(2, '.', ',') }} zł</strong></td>
+                            <td class="vat"><strong>RAZEM</strong></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
 
             <div class="notes-block">
                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                     <tbody>
                     <tr>
                         <td>
-                            Do zapłaty:  {{ faktura.razemBrutto |number_format(2, '.', ',')}} zł   <br/>
+                            Do zapłaty: {{ faktura.razemBrutto |number_format(2, '.', ',') }} zł <br/>
 
                         </td>
                     </tr>
-                    <tr><td> <br></td></tr>
+                    <tr>
+                        <td><br></td>
+                    </tr>
                     <tr>
                         <td>
                             Zapłacono: 0 zł.<br>
-                            Pozostaje do zapłaty: {{ faktura.razemBrutto |number_format(2, '.', ',')}} zł
+                            Pozostaje do zapłaty: {{ faktura.razemBrutto |number_format(2, '.', ',') }} zł
                         </td>
                     </tr>
                 </table>
@@ -269,7 +393,7 @@ Konto bankowe:  {{ faktura_dane.konto }}<br />
                                 <br><br>
                                 {{ faktura.wystawil }}
                                 <br>
-                                ...........................................<br />
+                                ...........................................<br/>
                                 <b>Wystawił</b>
                             </div>
                         </td>
@@ -277,21 +401,30 @@ Konto bankowe:  {{ faktura_dane.konto }}<br />
                     </tbody>
                 </table>
             </div>
-            <br />
-            <br />
-            <br />
-            <br />
+            <br/>
+            <br/>
+            <br/>
+            <br/>
             &nbsp;</div>
+
     </div>
+
 </div>
-<div class="divFooter" style="text-align: center;width:100%">{{ footer  }}</div>
+<div class="divFooter" style="text-align: center;width:100%">{{ footer }}</div>
 <style>
     body {
         background: #EBEBEB;
     }
-    .invoice-wrap {box-shadow: 0 0 4px rgba(0, 0, 0, 0.1); margin-bottom: 20px; }
+
+    .invoice-wrap {
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
     #mobile-preview-close a {
-        position:fixed; left:20px; bottom:30px;
+        position: fixed;
+        left: 20px;
+        bottom: 30px;
         background-color: #27c24c;
         font-weight: 600;
         outline: 0 !important;
@@ -299,36 +432,49 @@ Konto bankowe:  {{ faktura_dane.konto }}<br />
         border-radius: 3px;
         font-size: 14px;
         padding: 7px 10px;
-        border:1px solid #27c24c;
-        text-decoration:none;
+        border: 1px solid #27c24c;
+        text-decoration: none;
     }
+
     #mobile-preview-close img {
-        width:20px;
-        height:auto;
+        width: 20px;
+        height: auto;
     }
+
     #mobile-preview-close a:nth-child(2) {
-        left:190px;
-        background:#f5f5f5;
-        border:1px solid #9f9f9f;
-        color:#555 !important;
+        left: 190px;
+        background: #f5f5f5;
+        border: 1px solid #9f9f9f;
+        color: #555 !important;
     }
+
     #mobile-preview-close a:nth-child(2) img {
         height: auto;
         position: relative;
         top: 2px;
     }
-    .invoice-wrap {padding: 20px;}
 
+    .invoice-wrap {
+        padding: 20px;
+    }
 
     @media print {
         #mobile-preview-close a {
-            display:none
+            display: none
         }
-        .invoice-wrap {0}
+
+        .invoice-wrap {
+            0
+        }
+
         body {
             background: none;
         }
-        .invoice-wrap {box-shadow: none; margin-bottom: 0px;}
+
+        .invoice-wrap {
+            box-shadow: none;
+            margin-bottom: 0px;
+        }
 
     }
 </style>
