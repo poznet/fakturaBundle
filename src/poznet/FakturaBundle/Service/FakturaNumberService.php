@@ -10,6 +10,7 @@ namespace FakturaBundle\src\poznet\FakturaBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use poznet\FakturaBundle\Entity\Faktura;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
@@ -20,15 +21,17 @@ class FakturaNumberService
 {
     private $kernel;
     private $em;
+    private $container;
 
     /**
      * @param $last
      */
 
-    public function __construct(KernelInterface $kernel, EntityManagerInterface $entityManager)
+    public function __construct(KernelInterface $kernel, EntityManagerInterface $entityManager, KernelInterface $kernel)
     {
         $this->kernel = $kernel;
         $this->em = $entityManager;
+        $this->container = $kernel->getContainer();
     }
 
     /**
@@ -37,9 +40,9 @@ class FakturaNumberService
      */
     public function generateNumber(Faktura $fv, $user_id = 0)
     {
-        if($user_id>0){
-            $ostatnia = $this->em->getRepository("poznetFakturaBundle:Faktura")->findBy(['nabywcaId'=>$user_id], ["id" => "DESC"], 1);
-        }else{
+        if ($user_id > 0) {
+            $ostatnia = $this->em->getRepository("poznetFakturaBundle:Faktura")->findBy(['nabywcaId' => $user_id], ["id" => "DESC"], 1);
+        } else {
             $ostatnia = $this->em->getRepository("poznetFakturaBundle:Faktura")->findBy([], ["id" => "DESC"], 1);
         }
 
@@ -81,6 +84,9 @@ class FakturaNumberService
             $tab[2] = $fv->getDataWystawienia()->format('Y');
             $nr = implode('/', $tab);
         }
+
+        if ($this->container->hasParameter('fv_numer_prefix'))
+            $nr = $this->container->getParameter('fv_numer_prefix') . $nr;
         return $nr;
     }
 
