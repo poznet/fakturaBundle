@@ -27,7 +27,7 @@ class FakturaNumberService
      * @param $last
      */
 
-    public function __construct(KernelInterface $kernel, EntityManagerInterface $entityManager, KernelInterface $kernel)
+    public function __construct(KernelInterface $kernel, EntityManagerInterface $entityManager)
     {
         $this->kernel = $kernel;
         $this->em = $entityManager;
