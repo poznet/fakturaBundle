@@ -101,7 +101,7 @@ class FakturaNumberService
         if ($this->kernel->getContainer()->hasParameter('faktura_termin_days')) {
             $days = $this->kernel->getContainer()->getParameter('faktura_termin_days');
         } else {
-            $days = 14;
+            $days = 7;
         }
         $data = new \DateTime('now + ' . $days . ' days');
         return $data;

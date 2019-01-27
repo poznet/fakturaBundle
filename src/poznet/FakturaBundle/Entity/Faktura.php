@@ -159,6 +159,9 @@ class Faktura
      */
     private $wystawil;
 
+
+    private $stawki;
+
     public function __construct()
     {
         $this->dataUslugi=new \DateTime('now');
@@ -571,6 +574,24 @@ class Faktura
     {
         $this->wystawil = $wystawil;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStawki()
+    {
+        return unserialize($this->stawki);
+    }
+
+    /**
+     * @param mixed $stawki
+     */
+    public function setStawki($stawki)
+    {
+        $this->stawki = serialize($stawki);
+    }
+
+
 
 
 

@@ -10,6 +10,7 @@ namespace FakturaBundle\src\poznet\FakturaBundle\Service;
 
 
 use Doctrine\ORM\EntityManagerInterface;
+use FakturaBundle\src\poznet\FakturaBundle\Helper\StawkiPodatkuHelper;
 use poznet\FakturaBundle\Entity\Faktura;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
@@ -36,7 +37,8 @@ class FakturaGeneratorService
 
     public function generateHTML(Faktura $fv, $footer = null)
     {
-        return $this->twig->render('poznetFakturaBundle::print.html.twig', ['faktura' => $fv,'footer'=>$footer]);
+        $stawki=StawkiPodatkuHelper::generate($fv);
+        return $this->twig->render('poznetFakturaBundle::print.html.twig', ['faktura' => $fv,'footer'=>$footer,'stawki'=>$stawki]);
     }
 
     public function savePDF(Faktura $fv, $footer = ' ')
