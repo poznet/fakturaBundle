@@ -73,7 +73,8 @@ class FakturaNumberService
 
         $index = 0;
         if ($this->container->hasParameter('fv_numer_prefix')) {
-            if ($tab[0] == $this->container->getParameter('fv_numer_prefix'))
+            $y = explode('/', $this->container->getParameter('fv_numer_prefix'));
+            if ($tab[0] == $y[0])
                 $index++;
         }
 
