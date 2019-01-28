@@ -92,10 +92,12 @@ class FakturaNumberService
             $tab[$index + 2] = $fv->getDataWystawienia()->format('Y');
             $nr = implode('/', $tab);
         }
-        VarDumper::dump($tab);
-        VarDumper::dump($nr);
-        if ($this->container->hasParameter('fv_numer_prefix'))
+
+        if ($this->container->hasParameter('fv_numer_prefix')) {
+            $y = explode('/', $this->container->getParameter('fv_numer_prefix'));
+            if ($tab[0] != $y[0])
             $nr = $this->container->getParameter('fv_numer_prefix') . $nr;
+        }
         return $nr;
     }
 
