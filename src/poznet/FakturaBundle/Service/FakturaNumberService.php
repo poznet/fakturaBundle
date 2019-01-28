@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use poznet\FakturaBundle\Entity\Faktura;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * Class FakturaNumberService
@@ -70,21 +71,28 @@ class FakturaNumberService
             return $txt;
         }
 
-        if ($user_id > 0) {
-            $x = $tab[0];
-            $tab[0] = (int)$x + 1;
-            $tab[1] = (int)$user_id;
-            $tab[2] = $fv->getDataWystawienia()->format('m');
-            $tab[3] = $fv->getDataWystawienia()->format('Y');
-            $nr = implode('/', $tab);
-        } else {
-            $x = $tab[0];
-            $tab[0] = (int)$x + 1;
-            $tab[1] = $fv->getDataWystawienia()->format('m');
-            $tab[2] = $fv->getDataWystawienia()->format('Y');
-            $nr = implode('/', $tab);
+        $index = 0;
+        if ($this->container->hasParameter('fv_numer_prefix')) {
+            if ($tab[0] == $this->container->getParameter('fv_numer_prefix'))
+                $index++;
         }
 
+        if ($user_id > 0) {
+            $x = $tab[$index];
+            $tab[$index] = (int)$x + 1;
+            $tab[$index + 1] = (int)$user_id;
+            $tab[$index + 2] = $fv->getDataWystawienia()->format('m');
+            $tab[$index + 3] = $fv->getDataWystawienia()->format('Y');
+            $nr = implode('/', $tab);
+        } else {
+            $x = $tab[$index];
+            $tab[$index] = (int)$x + 1;
+            $tab[$index + 1] = $fv->getDataWystawienia()->format('m');
+            $tab[$index + 2] = $fv->getDataWystawienia()->format('Y');
+            $nr = implode('/', $tab);
+        }
+        VarDumper::dump($tab);
+        VarDumper::dump($nr);
         if ($this->container->hasParameter('fv_numer_prefix'))
             $nr = $this->container->getParameter('fv_numer_prefix') . $nr;
         return $nr;
