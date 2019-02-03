@@ -48,6 +48,7 @@
     <div class="col-xs-12 col-md-6">
         {{ form_row(form.platnosc) }}
         {{ form_row(form.terminPlatnosci) }}
+        {{ form_row(form.zaplacone) }}
 
     </div>
 </div>
@@ -63,32 +64,50 @@
 {{ form_end(form) }}
 
 <script>
-    var faktura={
-        licz: function(id){
+    var faktura = {
+        transformvat: function (vat) {
+            console.log(vat);
+            if(vat == undefined)
+                return vat
+
+            if (vat=='np') {
+                return 0;
+
+            }
+
+            return vat;
+        },
+
+        licz: function (id) {
             var ilosc = $('input[rel-ilosc="' + id + '"]').val();
             var cena = $('input[rel-cena="' + id + '"]').val();
-            var vat = $('input[rel-vat="' + id + '"]').val();
+            var vat = $('select[rel-vat="' + id + '"]').val();
+
+
+
+            vat = this.transformvat(vat);
             var razem = $('input[rel-razem="' + id + '"]').val();
             var netto = ilosc * cena;
             var brutto = netto + (netto * (vat / 100));
             $('input[rel-razem="' + id + '"]').val(brutto.toFixed(2));
         },
-        licz_razem:function(){
-            var netto_razem=0;
-            var vat_razem=0;
-            var razem_razem=0;
+        licz_razem: function () {
+            var netto_razem = 0;
+            var vat_razem = 0;
+            var razem_razem = 0;
 
-            for(var i=0;i<100;i++){
+            for (var i = 0; i < 100; i++) {
                 var ilosc = $('input[rel-ilosc="' + i + '"]').val();
                 var cena = $('input[rel-cena="' + i + '"]').val();
                 var vat = $('input[rel-vat="' + i + '"]').val();
-                if (( ilosc != undefined) && ( cena !=undefined)){
+                vat = this.transformvat(vat);
+                if (( ilosc != undefined) && ( cena != undefined)) {
                     var netto = ilosc * cena;
-                    var podatek=netto * (vat / 100);
+                    var podatek = netto * (vat / 100);
                     var brutto = netto + podatek;
-                    netto_razem+=netto;
-                    vat_razem+=podatek;
-                    razem_razem+=brutto;
+                    netto_razem += netto;
+                    vat_razem += podatek;
+                    razem_razem += brutto;
                 }
             }
             $('#poznet_fakturabundle_faktura_razemNetto').val(netto_razem.toFixed(2));
@@ -98,7 +117,6 @@
         }
 
     };
-
 
 
     $(document).ready(function () {
@@ -112,9 +130,9 @@
             var id = $(this).attr('rel');
             faktura.licz(id);
             faktura.licz_razem();
-            console.log('a');
+
         });
-        $('.poz_vat').on('keyup', function () {
+        $('.poz_vat').on('change', function () {
             var id = $(this).attr('rel');
             faktura.licz(id);
             faktura.licz_razem();
@@ -160,7 +178,6 @@
         newForm = newForm.replace(/rel-cena="1"/g, 'rel-cena="' + (index + 11) + '"');
         newForm = newForm.replace(/rel-vat="1"/g, 'rel-vat="' + (index + 11) + '"');
         newForm = newForm.replace(/rel-razem="1"/g, 'rel-razem="' + (index + 11) + '"');
-
 
 
         // increase the index with one for the next item

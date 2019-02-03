@@ -4,7 +4,7 @@ services:
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
     poznet_faktura_service:
         class: FakturaBundle\src\poznet\FakturaBundle\Service\FakturaNumberService
-        arguments: ['@kernel','@doctrine.orm.entity_manager']
+        arguments: ['@kernel','@doctrine.orm.entity_manager' ]
 
     poznet\FakturaBundle\Form\FakturaType:
         tags: [form.type]

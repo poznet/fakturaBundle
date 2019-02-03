@@ -10,7 +10,9 @@ namespace FakturaBundle\src\poznet\FakturaBundle\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use poznet\FakturaBundle\Entity\Faktura;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\VarDumper\VarDumper;
 
 /**
  * Class FakturaNumberService
@@ -20,6 +22,7 @@ class FakturaNumberService
 {
     private $kernel;
     private $em;
+    private $container;
 
     /**
      * @param $last
@@ -29,6 +32,7 @@ class FakturaNumberService
     {
         $this->kernel = $kernel;
         $this->em = $entityManager;
+        $this->container = $kernel->getContainer();
     }
 
     /**
@@ -37,9 +41,9 @@ class FakturaNumberService
      */
     public function generateNumber(Faktura $fv, $user_id = 0)
     {
-        if($user_id>0){
-            $ostatnia = $this->em->getRepository("poznetFakturaBundle:Faktura")->findBy(['nabywcaId'=>$user_id], ["id" => "DESC"], 1);
-        }else{
+        if ($user_id > 0) {
+            $ostatnia = $this->em->getRepository("poznetFakturaBundle:Faktura")->findBy(['nabywcaId' => $user_id], ["id" => "DESC"], 1);
+        } else {
             $ostatnia = $this->em->getRepository("poznetFakturaBundle:Faktura")->findBy([], ["id" => "DESC"], 1);
         }
 
@@ -67,19 +71,32 @@ class FakturaNumberService
             return $txt;
         }
 
+        $index = 0;
+        if ($this->container->hasParameter('fv_numer_prefix')) {
+            $y = explode('/', $this->container->getParameter('fv_numer_prefix'));
+            if ($tab[0] == $y[0])
+                $index++;
+        }
+
         if ($user_id > 0) {
-            $x = $tab[0];
-            $tab[0] = (int)$x + 1;
-            $tab[1] = (int)$user_id;
-            $tab[2] = $fv->getDataWystawienia()->format('m');
-            $tab[3] = $fv->getDataWystawienia()->format('Y');
+            $x = $tab[$index];
+            $tab[$index] = (int)$x + 1;
+            $tab[$index + 1] = (int)$user_id;
+            $tab[$index + 2] = $fv->getDataWystawienia()->format('m');
+            $tab[$index + 3] = $fv->getDataWystawienia()->format('Y');
             $nr = implode('/', $tab);
         } else {
-            $x = $tab[0];
-            $tab[0] = (int)$x + 1;
-            $tab[1] = $fv->getDataWystawienia()->format('m');
-            $tab[2] = $fv->getDataWystawienia()->format('Y');
+            $x = $tab[$index];
+            $tab[$index] = (int)$x + 1;
+            $tab[$index + 1] = $fv->getDataWystawienia()->format('m');
+            $tab[$index + 2] = $fv->getDataWystawienia()->format('Y');
             $nr = implode('/', $tab);
+        }
+
+        if ($this->container->hasParameter('fv_numer_prefix')) {
+            $y = explode('/', $this->container->getParameter('fv_numer_prefix'));
+            if ($tab[0] != $y[0])
+            $nr = $this->container->getParameter('fv_numer_prefix') . $nr;
         }
         return $nr;
     }

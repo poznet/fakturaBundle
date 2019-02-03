@@ -305,10 +305,16 @@ Konto bankowe:  {{ faktura_dane.konto }}<br/>
                             <td style="text-align:center">{{ pozycja.ilosc }}</td>
                             <td style="text-align:center">{{ pozycja.cena |number_format(2, '.', ',') }} zł</td>
                             <td style="text-align:center">{{ pozycja.netto  |number_format(2, '.', ',') }} zł</td>
+                            {% if pozycja.vat!='np' %}
                             <td style="text-align:center">{{ (pozycja.netto * (pozycja.vat/100) ) |  number_format(2, '.', ',') }}
                                 zł
                             </td>
-                            <td style="text-align:center">{{ pozycja.vat }} %</td>
+                            {% else %}
+                                <td style="text-align:center">{{ (pozycja.netto * (0/100) ) |  number_format(2, '.', ',') }}
+                                    zł
+                                </td>
+                            {% endif %}
+                            <td style="text-align:center">{{ pozycja.vat }} {% if pozycja.vat!='np' %}%{% endif %}</td>
                             <td width="100" style="text-align:right">{{ pozycja.razem  |number_format(2, '.', ',') }}
                                 zł
                             </td>
