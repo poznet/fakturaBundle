@@ -3,6 +3,7 @@
 namespace poznet\FakturaBundle\Form;
 
 use FakturaBundle\src\poznet\FakturaBundle\EventSubscriber\FakturaFormSubscriber;
+use FakturaBundle\src\poznet\FakturaBundle\Helper\StawkiPodatkuHelper;
 use FakturaBundle\src\poznet\FakturaBundle\Model\PozycjaModel;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -18,6 +19,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PozycjaType extends AbstractType
 {
+    private $stawki;
+
+    public function __construct()
+    {
+        $this->stawki=StawkiPodatkuHelper::getDomyslneStawkiasTab();
+    }
 
 
     /**
@@ -29,7 +36,8 @@ class PozycjaType extends AbstractType
             ->add('nazwa',TextType::class,['label'=>false,'attr'=>['class'=>'poz_nazwa'],'required'=>false])
             ->add('ilosc',TextType::class,['label'=>false,'attr'=>['class'=>'poz_ilosc'],'required'=>false])
             ->add('cena',TextType::class,['label'=>false,'attr'=>['class'=>'poz_cena'],'required'=>false])
-            ->add('vat',TextType::class,['label'=>false,'attr'=>['class'=>'poz_vat'],'required'=>false])
+            ->add('vat',ChoiceType::class,['label'=>false,'attr'=>['class'=>'poz_vat'],'required'=>false,
+            'choices'=>$this->stawki ])
             ->add('razem',TextType::class,['label'=>false,'attr'=>['class'=>'poz_razem'],'required'=>false])
 
 

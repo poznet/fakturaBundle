@@ -11,6 +11,7 @@ namespace FakturaBundle\src\poznet\FakturaBundle\EventSubscriber;
 
 use FakturaBundle\src\poznet\FakturaBundle\Helper\StawkiPodatkuHelper;
 use FakturaBundle\src\poznet\FakturaBundle\Model\Stawki;
+use poznet\FakturaBundle\Entity\Faktura;
 use poznet\FakturaBundle\Model\Pozycja;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
@@ -21,6 +22,7 @@ use Symfony\Component\VarDumper\VarDumper;
 class FakturaFormSubscriber implements EventSubscriberInterface
 {
     private $kernel;
+    private $stawki;
 
 
     public function __construct(KernelInterface $kernel)
@@ -81,6 +83,13 @@ class FakturaFormSubscriber implements EventSubscriberInterface
 
         $fv = $event->getData();
         $pozycje = $fv->getPozycje();
+        $form=$event->getForm();
+        $zaplacone=$form->get("zaplacone")->getData();
+        $fv->setStatus(Faktura::STATUS_UNPAID);
+
+        if($zaplacone==true){
+            $fv->setStatus(Faktura::STATUS_PAID);
+        }
         $razem = 0;
         $razemVat = 0;
         $razemNetto = 0;
@@ -93,7 +102,10 @@ class FakturaFormSubscriber implements EventSubscriberInterface
 
 
             $razem += $p->getRazem();
-            $razemVat += ($p->getNetto() * $p->getVat()) / 100;
+            $v=$p->getVat();
+            if($v='np')
+                $v=0;
+            $razemVat += ($p->getNetto() * $v) / 100;
             $razemNetto += $p->getNetto();
 
 

@@ -14,12 +14,17 @@ use poznet\FakturaBundle\Entity\Faktura;
 
 class StawkiPodatkuHelper
 {
-    private static $domyslneStawki = ['23%', '8%', '5%', '0%', 'np'];
+    private static $domyslneStawki = ['23'=>'23%', '8'=>'8%', '5'=>'5%', '0'=>'0%', 'np'=>'np'];
     private static $stawki = [];
 
     public static function getDomyslneStawki()
     {
         return self::$domyslneStawki;
+    }
+
+    public static function getDomyslneStawkiasTab()
+    {
+        return array_flip(self::$domyslneStawki);
     }
 
 
@@ -37,9 +42,15 @@ class StawkiPodatkuHelper
 
         foreach ($pozycje as $p) {
             $razem += $p->getRazem();
-            $razemVat += ($p->getNetto() * $p->getVat()) / 100;
+            $v=$p->getVat();
+            if($v=='np')
+                $v=0;
+            $razemVat += ($p->getNetto() * $v) / 100;
             $razemNetto += $p->getNetto();
-            self::addToStawki($p->getVat().'%', $p->getNetto(), ($p->getNetto() * $p->getVat()) / 100);
+            $nazwa=$p->getVat().'%';
+            if($p->getVat()=='np')
+                $nazwa='np';
+            self::addToStawki($nazwa, $p->getNetto(), ($p->getNetto() * $v) / 100);
         }
 
         return self::$stawki;
