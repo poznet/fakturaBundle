@@ -99,7 +99,7 @@
             for (var i = 0; i < 100; i++) {
                 var ilosc = $('input[rel-ilosc="' + i + '"]').val();
                 var cena = $('input[rel-cena="' + i + '"]').val();
-                var vat = $('input[rel-vat="' + i + '"]').val();
+                var vat =  $('select[rel-vat="' + i + '"]').val();
                 vat = this.transformvat(vat);
                 if (( ilosc != undefined) && ( cena != undefined)) {
                     var netto = ilosc * cena;

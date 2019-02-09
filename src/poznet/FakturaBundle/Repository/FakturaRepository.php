@@ -23,4 +23,13 @@ class FakturaRepository extends \Doctrine\ORM\EntityRepository
 
         return $result;
     }
+
+    public function findByMiesiac($rok, $miesiac)
+    {
+        $qb = $this->createQueryBuilder('f')
+            ->andWhere('f.dataWystawienia  LIKE :forDate')
+            ->setParameter('forDate', $rok . '-' . $miesiac . '-%')
+            ->getQuery();
+        return $qb->execute();
+    }
 }
