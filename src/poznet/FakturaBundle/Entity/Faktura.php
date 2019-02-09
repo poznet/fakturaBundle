@@ -176,8 +176,11 @@ class Faktura
         $sumavat=0;
         $sumarazem=0;
         foreach($this->getPozycje() as $pozycja){
+            $v=$pozycja->getVat();
+            if($pozycja->getVat()=='np')
+                $v=0;
             $sumanetto+=$pozycja->getNetto();
-            $sumavat+=$pozycja->getNetto()*($pozycja->getVat()/100);
+            $sumavat+=$pozycja->getNetto()*($v/100);
             $sumarazem+=$pozycja->getRazem();
 
         }
