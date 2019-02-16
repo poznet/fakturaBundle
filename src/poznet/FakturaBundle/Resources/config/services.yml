@@ -18,3 +18,8 @@ services:
     faktura_finder_service:
         class: FakturaBundle\src\poznet\FakturaBundle\Service\FakturaFinderService
         arguments: ['@doctrine.orm.default_entity_manager','%kernel.root_dir%']
+
+    faktura_twig_extension:
+        class: FakturaBundle\src\poznet\FakturaBundle\Twig\FakutraExtension
+        arguments: ['@security.token_storage','@doctrine.orm.default_entity_manager','%%faktura_dane%']
+        tags: [ 'twig.runtime' ]

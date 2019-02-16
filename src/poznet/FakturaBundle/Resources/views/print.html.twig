@@ -180,13 +180,8 @@
 Data wystawienia: {{ faktura.dataWystawienia | date('d-m-Y') }}<br/>
 Data wykonania usługi: {{ faktura.dataUslugi | date('d-m-Y') }}<br/>
 <br/>
-<b>Sprzedawca: </b><br/>{% if faktura_dane is defined %}
-<br/>                                      {{ faktura_dane.nazwa }} <br/>
-                                            {{ faktura_dane.adres1 }}<br/>
-                                            {{ faktura_dane.adres2 }}<br/>
-NIP: {{ faktura_dane.nip }}<br/>
-Konto bankowe:  {{ faktura_dane.konto }}<br/>
-                                            {% endif %}
+<b>Sprzedawca: </b><br/>
+                                            {{ daneFirmy()|raw }}
 
                                         </span></td>
                                 </tr>
@@ -306,9 +301,9 @@ Konto bankowe:  {{ faktura_dane.konto }}<br/>
                             <td style="text-align:center">{{ pozycja.cena |number_format(2, '.', ',') }} zł</td>
                             <td style="text-align:center">{{ pozycja.netto  |number_format(2, '.', ',') }} zł</td>
                             {% if pozycja.vat!='np' %}
-                            <td style="text-align:center">{{ (pozycja.netto * (pozycja.vat/100) ) |  number_format(2, '.', ',') }}
-                                zł
-                            </td>
+                                <td style="text-align:center">{{ (pozycja.netto * (pozycja.vat/100) ) |  number_format(2, '.', ',') }}
+                                    zł
+                                </td>
                             {% else %}
                                 <td style="text-align:center">{{ (pozycja.netto * (0/100) ) |  number_format(2, '.', ',') }}
                                     zł
