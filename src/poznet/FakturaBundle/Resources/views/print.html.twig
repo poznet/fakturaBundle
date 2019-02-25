@@ -180,13 +180,9 @@
 Data wystawienia: {{ faktura.dataWystawienia | date('d-m-Y') }}<br/>
 Data wykonania usługi: {{ faktura.dataUslugi | date('d-m-Y') }}<br/>
 <br/>
-<b>Sprzedawca: </b><br/>{% if faktura_dane is defined %}
-<br/>                                      {{ faktura_dane.nazwa }} <br/>
-                                            {{ faktura_dane.adres1 }}<br/>
-                                            {{ faktura_dane.adres2 }}<br/>
-NIP: {{ faktura_dane.nip }}<br/>
-Konto bankowe:  {{ faktura_dane.konto }}<br/>
-                                            {% endif %}
+<b>Sprzedawca: </b><br/>
+
+                                            {{ sprzedawca(faktura) | raw }}
 
                                         </span></td>
                                 </tr>

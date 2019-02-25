@@ -63,6 +63,21 @@ class Faktura
     /**
      * @var string
      *
+     * @ORM\Column(name="sprzedawca", type="text", nullable=true)
+     */
+    private $sprzedawca;
+
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="sprzedawca_id", type="integer", nullable=true)
+     */
+    private $sprzedawcaId=0;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="nabywca_nip", type="string", length=100 , nullable=true)
      *
      * @KiczortAssert\Nip
@@ -592,6 +607,38 @@ class Faktura
     public function setStawki($stawki)
     {
         $this->stawki = serialize($stawki);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSprzedawca()
+    {
+        return $this->sprzedawca;
+    }
+
+    /**
+     * @param string $sprzedawca
+     */
+    public function setSprzedawca($sprzedawca)
+    {
+        $this->sprzedawca = $sprzedawca;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSprzedawcaId()
+    {
+        return $this->sprzedawcaId;
+    }
+
+    /**
+     * @param string $sprzedawcaId
+     */
+    public function setSprzedawcaId($sprzedawcaId)
+    {
+        $this->sprzedawcaId = $sprzedawcaId;
     }
 
 
