@@ -174,6 +174,13 @@ class Faktura
      */
     private $wystawil;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="deleted", type="boolean", nullable=true)
+     */
+    private $deleted=false;
+
 
     private $stawki;
 
@@ -639,6 +646,24 @@ class Faktura
     public function setSprzedawcaId($sprzedawcaId)
     {
         $this->sprzedawcaId = $sprzedawcaId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDeleted()
+    {
+        if($this->deleted==null)
+            return false;
+        return $this->deleted;
+    }
+
+    /**
+     * @param string $deleted
+     */
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
     }
 
 
