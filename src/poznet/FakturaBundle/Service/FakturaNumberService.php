@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use poznet\FakturaBundle\Entity\Faktura;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\VarDumper\VarDumper;
 
 /**
@@ -23,16 +24,18 @@ class FakturaNumberService
     private $kernel;
     private $em;
     private $container;
+    private $tokenStorage;
 
     /**
      * @param $last
      */
 
-    public function __construct(KernelInterface $kernel, EntityManagerInterface $entityManager)
+    public function __construct(KernelInterface $kernel, EntityManagerInterface $entityManager,TokenStorageInterface $tokenStorage)
     {
         $this->kernel = $kernel;
         $this->em = $entityManager;
         $this->container = $kernel->getContainer();
+        $this->tokenStorage=$tokenStorage;
     }
 
     /**
@@ -41,10 +44,16 @@ class FakturaNumberService
      */
     public function generateNumber(Faktura $fv, $user_id = 0)
     {
+        $firma=0;
+        if(method_exists($this->tokenStorage->getToken()->getUser(),'getFirma')){
+            $firma=$this->tokenStorage->getToken()->getUser()->getFirma()->getId();
+        }
+
+
         if ($user_id > 0) {
-            $ostatnia = $this->em->getRepository("poznetFakturaBundle:Faktura")->findBy(['nabywcaId' => $user_id], ["id" => "DESC"], 1);
+            $ostatnia = $this->em->getRepository("poznetFakturaBundle:Faktura")->findBy(['nabywcaId' => $user_id,'firmaId'=>$firma], ["id" => "DESC"], 1);
         } else {
-            $ostatnia = $this->em->getRepository("poznetFakturaBundle:Faktura")->findBy([], ["id" => "DESC"], 1);
+            $ostatnia = $this->em->getRepository("poznetFakturaBundle:Faktura")->findBy(['firmaId'=>$firma], ["id" => "DESC"], 1);
         }
 
         if (count($ostatnia) > 0)
@@ -84,15 +93,26 @@ class FakturaNumberService
             $tab[$index + 1] = (int)$user_id;
             $tab[$index + 2] = $fv->getDataWystawienia()->format('m');
             $tab[$index + 3] = $fv->getDataWystawienia()->format('Y');
-            $nr = implode('/', $tab);
+
         } else {
             $x = $tab[$index];
             $tab[$index] = (int)$x + 1;
             $tab[$index + 1] = $fv->getDataWystawienia()->format('m');
             $tab[$index + 2] = $fv->getDataWystawienia()->format('Y');
-            $nr = implode('/', $tab);
+
         }
 
+        if(method_exists($this->tokenStorage->getToken()->getUser(),'getFirma')){
+            if ($user_id > 0) {
+                $tab[$index + 4] = $this->tokenStorage->getToken()->getUser()->getFirma()->getPrefix();
+            }else{
+                $tab[$index + 3] = $this->tokenStorage->getToken()->getUser()->getFirma()->getPrefix();
+            }
+
+        }
+        $nr = implode('/', $tab);
+
+//        VarDumper::dump($nr);
         if ($this->container->hasParameter('fv_numer_prefix')) {
             $y = explode('/', $this->container->getParameter('fv_numer_prefix'));
             if ($tab[0] != $y[0])

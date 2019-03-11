@@ -75,6 +75,14 @@ class Faktura
      */
     private $sprzedawcaId=0;
 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="firma_id", type="integer", nullable=true)
+     */
+    private $firmaId=0;
+
     /**
      * @var string
      *
@@ -664,6 +672,22 @@ class Faktura
     public function setDeleted($deleted)
     {
         $this->deleted = $deleted;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFirmaId()
+    {
+        return $this->firmaId;
+    }
+
+    /**
+     * @param string $firmaId
+     */
+    public function setFirmaId($firmaId)
+    {
+        $this->firmaId = $firmaId;
     }
 
 
