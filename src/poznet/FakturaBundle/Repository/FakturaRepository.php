@@ -2,6 +2,8 @@
 
 namespace poznet\FakturaBundle\Repository;
 
+use poznet\FakturaBundle\Dql\Month;
+
 /**
  * FakturaRepository
  *
@@ -13,11 +15,17 @@ class FakturaRepository extends \Doctrine\ORM\EntityRepository
 
     public function findLastNumberForMonth(\DateTime $data, $firm = null)
     {
+
+        $emConfig = $this->getEntityManager()->getConfiguration();
+        $emConfig->addCustomDatetimeFunction('YEAR', 'DoctrineExtensions\Query\Mysql\Year');
+        $emConfig->addCustomDatetimeFunction('MONT', 'DoctrineExtensions\Query\Mysql\Month');
+        $emConfig->addCustomDatetimeFunction('DAY', 'DoctrineExtensions\Query\Mysql\Day');
+
         if($firm==0) $firm=null;
         if ($firm != null) {
             $result = $this->getEntityManager()->createQuery('
         SELECT F from FakturaBundle:Faktura F
-        WHERE MONTH(F.data_wystawienie)=:miesiac
+        WHERE MONTH(F.data_wystawienia)=:miesiac
         AND WHERE F.sprzedawcaId=:firm
         ORDER BY F.id DESC  ')
                 ->setParameter('firm', $firm);
@@ -37,16 +45,20 @@ class FakturaRepository extends \Doctrine\ORM\EntityRepository
 
     public function findByMiesiac($rok, $miesiac, $firm = null)
     {
-        if($firm==0) $firm=null;
-        $qb = $this->createQueryBuilder('f')
-            ->andWhere('f.dataWystawienia  LIKE :forDate');
-        if ($firm != null) {
-            $qb->andWhere('f.sprzedawcaId  LIKE :firm')
-                ->setParameter('firm', $firm);
-        }
-        $qb
-            ->setParameter('forDate', $rok . '-' . $miesiac . '-%');
 
-        return $qb->getQuery()->execute();
+
+        $result = $this->getEntityManager()->createQuery('
+        SELECT F from poznetFakturaBundle:Faktura F
+        WHERE MONTH(F.dataWystawienia)=:miesiac
+        AND   YEAR(F.dataWystawienia)=:rok
+        AND  F.firmaId=:firm
+        ORDER BY F.id DESC  ')
+            ->setParameter('firm', $firm)
+            ->setParameter('miesiac', $miesiac )
+        ->setParameter('rok', $rok )->getResult();
+
+        return $result;
+
+
     }
 }
