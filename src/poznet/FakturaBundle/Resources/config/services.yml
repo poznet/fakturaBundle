@@ -21,6 +21,6 @@ services:
 
     faktura_nabywca_twig_extension:
         class: FakturaBundle\src\poznet\FakturaBundle\Twig\SprzedawcaExtension
-        arguments: ['%faktura_dane%']
+        arguments: ['%faktura_dane%','@doctrine.orm.entity_manager']
         tags:
              - { name: twig.extension }

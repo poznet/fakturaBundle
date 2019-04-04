@@ -9,17 +9,20 @@
 namespace FakturaBundle\src\poznet\FakturaBundle\Twig;
 
 
+use Doctrine\ORM\EntityManagerInterface;
 use poznet\FakturaBundle\Entity\Faktura;
+use ScraperBundle\Entity\Firma;
 use Twig\Extension\AbstractExtension;
 
 class SprzedawcaExtension extends AbstractExtension
 {
     private $dane;
+    private $em;
 
-    public function __construct($dane)
+    public function __construct($dane, EntityManagerInterface $entityManager)
     {
         $this->dane = $dane;
-
+        $this->em = $entityManager;
     }
 
     public function getFunctions()
@@ -32,10 +35,19 @@ class SprzedawcaExtension extends AbstractExtension
 
     public function getSprzedawca(Faktura $faktura)
     {
-        if ($faktura->getSprzedawca() != '') {
-            return $faktura->getSprzedawca();
-        } else {
+
+        if ($faktura->getFirmaId() == 0) {
             return $this->getDefaultData();
+        } else {
+            $firm = $this->em->getRepository("ScraperBundle:Firma")->findOneById($faktura->getFirmaId());
+            if ($firm instanceof Firma) {
+                return $firm->getNazwa() . '<br/>' . $firm->getAdres1() . ', ' . $firm->getAdres2() . ', NIP: ' . $firm->getNip() . '
+                       <br />Konto bankowe:  ' . $firm->getKonto();
+
+
+            }
+
+
         }
     }
 
